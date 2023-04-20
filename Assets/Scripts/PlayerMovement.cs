@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
     public GameObject model;
+    public GameObject cam;
 
     private float speed;
     public float runSpeed;
@@ -17,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
     public float checkSphereRadius;
     public float groundedSpeedY;
     public LayerMask groundMask;
+
+    public Animator animator;
 
     Vector3 velocity;
     public static bool isGrounded;
@@ -74,5 +77,15 @@ public class PlayerMovement : MonoBehaviour
         // we need to multiply with time twice because y=0.5*g*t^2
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        if(z > 0)
+        {
+            animator.SetBool("Walking", true);
+        }
+
+        else
+        {
+            animator.SetBool("Walking", false);
+        }
     }
 }

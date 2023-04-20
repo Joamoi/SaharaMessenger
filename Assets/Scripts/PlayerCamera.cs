@@ -17,6 +17,8 @@ public class PlayerCamera : MonoBehaviour
     {
         // hides cursor
         Cursor.visible = false;
+
+        transform.rotation = Quaternion.Euler(20f, 0f, 0f);
     }
 
     // Update is called once per frame
