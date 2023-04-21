@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class RigidMovement : MonoBehaviour
 {
     public CharacterController controller;
-    public GameObject model;
-    public GameObject cam;
+    public Transform cam;
 
     private float speed;
     public float runSpeed;
@@ -14,19 +13,24 @@ public class PlayerMovement : MonoBehaviour
     public float gravity;
     public float jumpHeight;
 
+    public float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+
     public Transform groundCheck;
     public float checkSphereRadius;
     public float groundedSpeedY;
     public LayerMask groundMask;
+    private Vector3 velocity;
+    public static bool isGrounded;
 
     public Animator animator;
-
-    Vector3 velocity;
-    public static bool isGrounded;
 
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         speed = walkSpeed;
     }
 
@@ -42,16 +46,20 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = groundedSpeedY;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
 
-        // movement vector is combination of x and z
-        Vector3 move = transform.right * x + transform.forward * z;
+        Vector3 direction = new Vector3(x, 0f, z).normalized;
 
-        // movement vector is clamped to 1 so that diagonal movement is not faster
-        move = Vector3.ClampMagnitude(move, 1f);
+        if(direction.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-        controller.Move(move * speed * Time.deltaTime);
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(moveDir * speed * Time.deltaTime);
+        }
 
         if (isGrounded)
         {
@@ -78,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if(z > 0)
+        if (z > 0)
         {
             animator.SetBool("Walking", true);
         }
