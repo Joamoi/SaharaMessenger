@@ -13,8 +13,13 @@ public class CurvedMovement : MonoBehaviour
     public float gravity;
     public float jumpHeight;
 
+    private float currentAngle;
+    private float targetAngle;
+    private float dampedAngle;
+    private Vector3 direction;
     public float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
+    private float turnSmoothVelocity;
+    private bool turning = false;
 
     public Transform groundCheck;
     public float checkSphereRadius;
@@ -24,13 +29,6 @@ public class CurvedMovement : MonoBehaviour
     public static bool isGrounded;
 
     public Animator animator;
-
-    public Transform head;
-    public Transform neck;
-    public Transform spine;
-    public Transform headAxis;
-    public Transform neckAxis;
-    public Transform spineAxis;
 
     // Start is called before the first frame update
     void Start()
@@ -53,26 +51,45 @@ public class CurvedMovement : MonoBehaviour
             velocity.y = groundedSpeedY;
         }
 
-        // wasd/arrow inputs
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
+        // current angle for turn animations
+        currentAngle = transform.eulerAngles.y;
 
-        Vector3 direction = new Vector3(x, 0f, z).normalized;
+        if (!turning)
+        {
+            // wasd/arrow inputs
+            float x = Input.GetAxisRaw("Horizontal");
+            float z = Input.GetAxisRaw("Vertical");
 
-        if(direction.magnitude >= 0.1f)
+            direction = new Vector3(x, 0f, z).normalized;
+        }
+
+        if (direction.magnitude >= 0.1f)
         {
             // angle to the direction player wants to move
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            // smooth angle to avoid instant turn
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
 
-            //head.RotateAround(head.position, (head.position - headAxis.position), );
+            if (Mathf.Abs(targetAngle - dampedAngle) < 3f)
+            {
+                transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+                turning = false;
+            }
 
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            else
+            {
+                // smooth angle to avoid instant turn
+                dampedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, dampedAngle, 0f);
+                turning = true;
+            }
 
             // get move direction from target angle
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir * speed * Time.deltaTime);
+        }
+
+        if (turning && (Mathf.Abs(targetAngle - dampedAngle) <= 2.5f || Mathf.Abs(targetAngle - dampedAngle) >= 357.5f))
+        {
+            turning = false;
         }
 
         if (isGrounded)
@@ -82,6 +99,8 @@ public class CurvedMovement : MonoBehaviour
             {
                 // v = sqrt(-2hg)
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                animator.SetTrigger("Jump");
             }
 
             // sprint
@@ -100,14 +119,95 @@ public class CurvedMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if (z > 0)
+        // walk and run animations
+        if (direction.magnitude >= 0.1f)
         {
             animator.SetBool("Walking", true);
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetBool("Running", true);
+            }
+            else
+            {
+                animator.SetBool("Running", false);
+            }
         }
 
         else
         {
+            animator.SetBool("Running", false);
             animator.SetBool("Walking", false);
+        }
+
+        return;
+
+        // turn animations
+        if (!turning && Mathf.Abs(targetAngle - currentAngle) > 0.1f)
+        {
+            Debug.Log("turning");
+            animator.SetLayerWeight(1, 1f);
+            animator.SetLayerWeight(2, 1f);
+            animator.SetLayerWeight(3, 1f);
+
+            if ((targetAngle - currentAngle) < 0)
+            {
+                if (Mathf.Abs(targetAngle - currentAngle) < 45f)
+                {
+                    Debug.Log("head left");
+                    animator.SetTrigger("HeadLeft");
+                }
+
+                else if (Mathf.Abs(targetAngle - currentAngle) < 90f)
+                {
+                    Debug.Log("head and neck left");
+                    animator.SetTrigger("HeadLeft");
+                    animator.SetTrigger("NeckLeft");
+                }
+
+                else
+                {
+                    Debug.Log("all left");
+                    animator.SetTrigger("HeadLeft");
+                    animator.SetTrigger("NeckLeft");
+                    animator.SetTrigger("SpineLeft");
+                }
+            }
+
+            else
+            {
+                if (Mathf.Abs(targetAngle - currentAngle) < 45f)
+                {
+                    Debug.Log("head right");
+                    animator.SetTrigger("HeadRight");
+                }
+
+                else if (Mathf.Abs(targetAngle - currentAngle) < 90f)
+                {
+                    Debug.Log("neck right");
+                    animator.SetTrigger("HeadRight");
+                    animator.SetTrigger("NeckRight");
+                }
+
+                else
+                {
+                    Debug.Log("all right");
+                    animator.SetTrigger("HeadRight");
+                    animator.SetTrigger("NeckRight");
+                    animator.SetTrigger("SpineRight");
+                }
+            }
+
+            turning = true;
+        }
+
+        if (turning && Mathf.Abs(targetAngle - currentAngle) < 0.1f)
+        {
+            Debug.Log("turning ended");
+            animator.SetLayerWeight(1, 0f);
+            animator.SetLayerWeight(2, 0f);
+            animator.SetLayerWeight(3, 0f);
+            turning = false;
         }
     }
 }

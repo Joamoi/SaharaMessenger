@@ -13,8 +13,13 @@ public class RigidMovement : MonoBehaviour
     public float gravity;
     public float jumpHeight;
 
+    private float currentAngle;
+    private float targetAngle;
+    private float dampedAngle;
+    private Vector3 direction;
     public float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
+    private float turnSmoothVelocity;
+    private bool turning = false;
 
     public Transform groundCheck;
     public float checkSphereRadius;
@@ -46,16 +51,20 @@ public class RigidMovement : MonoBehaviour
             velocity.y = groundedSpeedY;
         }
 
+        // current angle for turn animations
+        currentAngle = transform.eulerAngles.y;
+
+        // wasd/arrow inputs
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
-        Vector3 direction = new Vector3(x, 0f, z).normalized;
+        direction = new Vector3(x, 0f, z).normalized;
 
-        if(direction.magnitude >= 0.1f)
+        if (direction.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            dampedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, dampedAngle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir * speed * Time.deltaTime);
@@ -68,6 +77,8 @@ public class RigidMovement : MonoBehaviour
             {
                 // v = sqrt(-2hg)
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                animator.SetTrigger("Jump");
             }
 
             // sprint
@@ -86,13 +97,24 @@ public class RigidMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if (z > 0)
+        // walk and run animations
+        if (direction.magnitude >= 0.1f)
         {
             animator.SetBool("Walking", true);
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetBool("Running", true);
+            }
+            else
+            {
+                animator.SetBool("Running", false);
+            }
         }
 
         else
         {
+            animator.SetBool("Running", false);
             animator.SetBool("Walking", false);
         }
     }

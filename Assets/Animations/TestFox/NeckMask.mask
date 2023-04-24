@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NeckMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: b_Root
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_LeftLeg01
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_LeftLeg01/b_LeftLeg02
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_LeftLeg01/b_LeftLeg02/b_LeftFoot01
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_LeftLeg01/b_LeftLeg02/b_LeftFoot01/b_LeftFoot02
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_RightLeg01
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_RightLeg01/b_RightLeg02
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_RightLeg01/b_RightLeg02/b_RightFoot01
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_RightLeg01/b_RightLeg02/b_RightFoot01/b_RightFoot02
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_LeftUpperArm
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_LeftUpperArm/b_LeftForeArm
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_LeftUpperArm/b_LeftForeArm/b_LeftHand
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_Neck
+    m_Weight: 1
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_Neck/b_Head
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_RightUpperArm
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_RightUpperArm/b_RightForeArm
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Spine01/b_Spine02/b_RightUpperArm/b_RightForeArm/b_RightHand
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Tail01
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Tail01/b_Tail02
+    m_Weight: 0
+  - m_Path: b_Root/b_Hip/b_Tail01/b_Tail02/b_Tail03
+    m_Weight: 0
+  - m_Path: fox1
+    m_Weight: 0
