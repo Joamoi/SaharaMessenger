@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1596614119495286125}
   - component: {fileID: 6033149434934261876}
   - component: {fileID: 3272614453222655305}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: hiekka1.lp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2601528608046023146}
-  m_Layer: 0
+  - component: {fileID: 7962745454812897454}
+  m_Layer: 6
   m_Name: hiekkatesti
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,10 +109,24 @@ Transform:
   m_GameObject: {fileID: 3409696405758532432}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -9127.296, y: 0, z: -2670.7297}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1596614119495286125}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &7962745454812897454
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3409696405758532432}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
