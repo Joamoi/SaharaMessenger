@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RigidMovement : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     public CharacterController controller;
     public Transform cam;
@@ -30,6 +30,22 @@ public class RigidMovement : MonoBehaviour
 
     public Animator animator;
 
+    private float hp = 100f;
+    public GameObject hpMask;
+    private float hp0PosX;
+    private float hp100PosX;
+    private float hpMax;
+    public float damagePerHit = 10f;
+
+    private float stamina = 100f;
+    public GameObject staminaMask;
+    private float stamina0PosX;
+    private float stamina100PosX;
+    private float staminaMax;
+    public float idleDrain = 0.5f;
+    public float walkDrain = 1f;
+    public float runDrain = 3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +53,14 @@ public class RigidMovement : MonoBehaviour
         Cursor.visible = false;
 
         speed = walkSpeed;
+
+        hp100PosX = hpMask.transform.position.x;
+        hp0PosX = hp100PosX - 3.2f;
+        hpMax = hp;
+
+        stamina100PosX = staminaMask.transform.position.x;
+        stamina0PosX = stamina100PosX - 3.2f;
+        staminaMax = stamina;
     }
 
     // Update is called once per frame
@@ -117,5 +141,39 @@ public class RigidMovement : MonoBehaviour
             animator.SetBool("Running", false);
             animator.SetBool("Walking", false);
         }
+
+        // stamina drain
+        if (direction.magnitude >= 0.1f)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                stamina -= runDrain * Time.deltaTime;
+            }
+            else
+            {
+                stamina -= walkDrain * Time.deltaTime;
+            }
+        }
+
+        else
+        {
+            stamina -= idleDrain * Time.deltaTime;
+        }
+
+        float newStaminaPosX = Mathf.Lerp(stamina100PosX, stamina0PosX, (staminaMax - stamina) / staminaMax);
+        staminaMask.transform.position = new Vector3(newStaminaPosX, staminaMask.transform.position.y, staminaMask.transform.position.z);
+    }
+
+    public void TakeDamage()
+    {
+        hp -= damagePerHit;
+
+        if (hp <= 0)
+        {
+            hp = 0;
+        }
+
+        float newHPPosX = Mathf.Lerp(hp100PosX, hp0PosX, (hpMax - hp) / hpMax);
+        hpMask.transform.position = new Vector3(newHPPosX, hpMask.transform.position.y, hpMask.transform.position.z);
     }
 }
