@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: kivi1
+  m_Name: toonkaktus2
   m_Shader: {fileID: -6465566751694194690, guid: ca6f39be3c92b4441b591ad4ca1258c2,
     type: 3}
   m_ValidKeywords: []
@@ -22,11 +22,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: c8637b989ca9467449e274076607cbf2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4dbdd059199635d419505bc1ee4d1e68, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 04ecb2e2644e0a04199334e03eee216f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 89f6edd31767a384b9e9909f166146dd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -46,11 +46,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c8637b989ca9467449e274076607cbf2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4dbdd059199635d419505bc1ee4d1e68, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: c8637b989ca9467449e274076607cbf2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4dbdd059199635d419505bc1ee4d1e68, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -105,7 +105,7 @@ Material:
     - _LightProbeContribution: 3.5
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineDepthSensitivity: 0.097
+    - _OutlineDepthSensitivity: 0.386
     - _OutlineNormalsSensitivity: 1
     - _OutlineThickness: 1
     - _Parallax: 0.005
@@ -123,13 +123,13 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 0.68235296, b: 0.63529414, a: 0}
+    - _MainColor: {r: 0.63529414, g: 0.77254903, b: 0.47843137, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &2579725033423975509
+--- !u!114 &8413869737978068636
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
