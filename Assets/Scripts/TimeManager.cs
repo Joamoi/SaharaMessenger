@@ -10,19 +10,60 @@ public class TimeManager : MonoBehaviour
     public float dayLength = 10f;
     public float transitionLength = 10f;
     public float nightLength = 10f;
-    private float lightAngle;
-    public float nightLightAngle;
+    private float rotationX;
+    private float rotationY;
+    public float dayLightAngle = -10f;
+    public float nightLightAngle = -90f;
+    private bool transitioning = false;
+    private float transitionTime = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rotationY = light.transform.eulerAngles.y;
+        Day();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //float newHPPosX = Mathf.Lerp(hp100PosX, hp0PosX, (hpMax - hp) / hpMax);
-        //hpMask.transform.position = new Vector3(newHPPosX, hpMask.transform.position.y, hpMask.transform.position.z);
+        if (transitioning)
+        {
+            transitionTime += Time.deltaTime;
+
+            rotationX = Mathf.Lerp(dayLightAngle, nightLightAngle, (transitionLength - transitionTime) / transitionLength);
+            light.transform.rotation = Quaternion.Euler(rotationX, rotationY, 0f);
+
+        }
+    }
+
+    IEnumerator Day()
+    {
+        yield return new WaitForSeconds(dayLength);
+        StartCoroutine("DayToNight");
+    }
+
+    IEnumerator DayToNight()
+    {
+        transitioning = true;
+        transitionTime = 0f;
+        yield return new WaitForSeconds(transitionLength);
+        transitioning = false;
+        StartCoroutine("Night");
+    }
+
+    IEnumerator Night()
+    {
+        yield return new WaitForSeconds(dayLength);
+        StartCoroutine("NightToDay");
+    }
+
+    IEnumerator NightToDay()
+    {
+        transitioning = true;
+        transitionTime = 0f;
+        yield return new WaitForSeconds(transitionLength);
+        transitioning = false;
+        StartCoroutine("Day");
     }
 }
