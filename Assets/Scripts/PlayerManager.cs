@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager playerInstance;
+
     public CharacterController controller;
     public Transform cam;
 
@@ -46,6 +48,16 @@ public class PlayerManager : MonoBehaviour
     public float walkDrain = 1f;
     public float runDrain = 3f;
 
+    public float healHPPerFood = 50f;
+    public float healStaminaPerFood = 50f;
+    public float healHPPerRest = 100f;
+    public float healStaminaPerRest = 100f;
+
+    void Awake()
+    {
+        playerInstance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +78,8 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // MOVEMENT
+
         // creates an invisible sphere at the bottom of the player to check if we are grounded so that we can reset gravity speed, isGrounded is true if sphere collides with ground layer, false if not
         isGrounded = Physics.CheckSphere(groundCheck.position, checkSphereRadius, groundMask);
 
@@ -142,23 +156,58 @@ public class PlayerManager : MonoBehaviour
             animator.SetBool("Walking", false);
         }
 
+        // HP STAMINA FOOD REST
+
         // stamina drain
         if (direction.magnitude >= 0.1f)
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                stamina -= runDrain * Time.deltaTime;
+                if (stamina > 0)
+                {
+                    stamina -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                }
+
+                else
+                {
+                    hp -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                }
             }
             else
             {
-                stamina -= walkDrain * Time.deltaTime;
+                if (stamina > 0)
+                {
+                    stamina -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                }
+
+                else
+                {
+                    hp -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                }
             }
         }
 
         else
         {
-            stamina -= idleDrain * Time.deltaTime;
+            if (stamina > 0)
+            {
+                stamina -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+            }
+
+            else
+            {
+                hp -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+            }
         }
+
+        if (stamina < 0)
+        {
+            stamina = 0;
+        }
+
+        // update hp and stamina bars
+        float newHPPosX = Mathf.Lerp(hp100PosX, hp0PosX, (hpMax - hp) / hpMax);
+        hpMask.transform.position = new Vector3(newHPPosX, hpMask.transform.position.y, hpMask.transform.position.z);
 
         float newStaminaPosX = Mathf.Lerp(stamina100PosX, stamina0PosX, (staminaMax - stamina) / staminaMax);
         staminaMask.transform.position = new Vector3(newStaminaPosX, staminaMask.transform.position.y, staminaMask.transform.position.z);
@@ -172,8 +221,37 @@ public class PlayerManager : MonoBehaviour
         {
             hp = 0;
         }
+    }
 
-        float newHPPosX = Mathf.Lerp(hp100PosX, hp0PosX, (hpMax - hp) / hpMax);
-        hpMask.transform.position = new Vector3(newHPPosX, hpMask.transform.position.y, hpMask.transform.position.z);
+    public void Eat()
+    {
+        hp += healHPPerFood;
+        stamina += healStaminaPerFood;
+
+        if (hp > 100)
+        {
+            hp = 100;
+        }
+
+        if (stamina > 100)
+        {
+            stamina = 100;
+        }
+    }
+
+    public void Rest()
+    {
+        hp += healHPPerRest;
+        stamina += healStaminaPerRest;
+
+        if (hp > 100)
+        {
+            hp = 100;
+        }
+
+        if (stamina > 100)
+        {
+            stamina = 100;
+        }
     }
 }

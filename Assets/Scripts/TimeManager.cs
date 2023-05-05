@@ -8,6 +8,11 @@ public class TimeManager : MonoBehaviour
     public GameObject light;
     public Gradient gradient;
 
+    public float dayMultiplier = 1f;
+    public float afternoonMultiplier = 0.8f;
+    public float eveningMultiplier = 0.6f;
+    public float nightMultiplier = 0.4f;
+
     public float dayLength = 10f;
     public float transitionLength = 10f;
     public float nightLength = 10f;
@@ -59,6 +64,7 @@ public class TimeManager : MonoBehaviour
 
     IEnumerator Day()
     {
+        timeDrainMultiplier = dayMultiplier;
         Debug.Log("Day Started");
         yield return new WaitForSeconds(dayLength);
         StartCoroutine("DayToNight");
@@ -66,11 +72,13 @@ public class TimeManager : MonoBehaviour
 
     IEnumerator DayToNight()
     {
+        timeDrainMultiplier = afternoonMultiplier;
         Debug.Log("DayToNight Started");
         transitionTime = 0f;
         dayToNight = true;
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = true;
+        timeDrainMultiplier = eveningMultiplier;
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = false;
         dayToNight = false;
@@ -79,6 +87,7 @@ public class TimeManager : MonoBehaviour
 
     IEnumerator Night()
     {
+        timeDrainMultiplier = nightMultiplier;
         Debug.Log("Night Started");
         yield return new WaitForSeconds(dayLength);
         StartCoroutine("NightToDay");
@@ -86,12 +95,14 @@ public class TimeManager : MonoBehaviour
 
     IEnumerator NightToDay()
     {
+        timeDrainMultiplier = eveningMultiplier;
         Debug.Log("NightToDay Started");
         transitionTime = 0f;
         nightToDay = true;
         colorChanging = true;
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = false;
+        timeDrainMultiplier = afternoonMultiplier;
         yield return new WaitForSeconds(transitionLength / 2f);
         nightToDay = false;
         StartCoroutine("Day");
