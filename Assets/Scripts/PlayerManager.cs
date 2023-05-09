@@ -48,10 +48,18 @@ public class PlayerManager : MonoBehaviour
     public float walkDrain = 1f;
     public float runDrain = 3f;
 
+
     public float healHPPerFood = 50f;
     public float healStaminaPerFood = 50f;
+    public float healHPPerDrink = 50f;
+    public float healStaminaPerDrink = 50f;
     public float healHPPerRest = 100f;
     public float healStaminaPerRest = 100f;
+
+    public GameObject eatText;
+    public GameObject drinkText;
+    public GameObject talkText;
+    public GameObject restText;
 
     void Awake()
     {
@@ -237,6 +245,26 @@ public class PlayerManager : MonoBehaviour
         {
             stamina = 100;
         }
+
+        eatText.SetActive(false);
+    }
+
+    public void Drink()
+    {
+        hp += healHPPerDrink;
+        stamina += healStaminaPerDrink;
+
+        if (hp > 100)
+        {
+            hp = 100;
+        }
+
+        if (stamina > 100)
+        {
+            stamina = 100;
+        }
+
+        drinkText.SetActive(false);
     }
 
     public void Rest()
