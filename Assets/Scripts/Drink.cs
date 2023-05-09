@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class Drink : MonoBehaviour
 {
-    private bool canEat;
+    private bool canDrink;
 
     // Update is called once per frame
     void Update()
     {
-        if (canEat)
+        if (canDrink)
         {
             if (Input.GetKey(KeyCode.E))
             {
-                PlayerManager.playerInstance.Eat();
-                Destroy(gameObject);
+                PlayerManager.playerInstance.Drink();
             }
         }
     }
@@ -23,8 +22,8 @@ public class Drink : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            canEat = true;
-            PlayerManager.playerInstance.eatText.SetActive(true);
+            canDrink = true;
+            PlayerManager.playerInstance.drinkText.SetActive(true);
         }
     }
 
@@ -32,8 +31,8 @@ public class Drink : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            canEat = false;
-            PlayerManager.playerInstance.eatText.SetActive(false);
+            canDrink = false;
+            PlayerManager.playerInstance.drinkText.SetActive(false);
         }
     }
 }
