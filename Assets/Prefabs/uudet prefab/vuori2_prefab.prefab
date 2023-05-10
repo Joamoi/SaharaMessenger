@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4784289579614830906}
-  - component: {fileID: 70376144192350137}
   m_Layer: 0
   m_Name: vuori2
   m_TagString: Untagged
@@ -33,19 +32,6 @@ Transform:
   m_Father: {fileID: 7853317528274924843}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &70376144192350137
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5273405834288421760}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2378.8965, y: 871.96985, z: 1325.7617}
-  m_Center: {x: 55.092773, y: 310.51074, z: 129.00879}
 --- !u!1 &6534838611733798752
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +43,7 @@ GameObject:
   - component: {fileID: 7663136674965058098}
   - component: {fileID: 7648302434069975725}
   - component: {fileID: 3957771831684508476}
+  - component: {fileID: 6966736691588992702}
   m_Layer: 0
   m_Name: vuori2decimate
   m_TagString: Untagged
@@ -129,6 +116,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6966736691588992702
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6534838611733798752}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5411456231910272773, guid: 2c3eea163ed853f4dad672267d3330ae, type: 3}
 --- !u!1 &6779069443817237024
 GameObject:
   m_ObjectHideFlags: 0
