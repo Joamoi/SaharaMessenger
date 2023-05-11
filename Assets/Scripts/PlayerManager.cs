@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public CharacterController controller;
     public Transform cam;
 
+    [HideInInspector]
     public bool canMove = true;
     private float speed;
     public float runSpeed;
@@ -105,12 +106,9 @@ public class PlayerManager : MonoBehaviour
         // current angle for turn animations
         currentAngle = transform.eulerAngles.y;
 
-        if (canMove)
-        {
-            // wasd/arrow inputs
-            x = Input.GetAxisRaw("Horizontal");
-            z = Input.GetAxisRaw("Vertical");
-        }
+        // wasd/arrow inputs
+        x = Input.GetAxisRaw("Horizontal");
+        z = Input.GetAxisRaw("Vertical");
 
         direction = new Vector3(x, 0f, z).normalized;
 
