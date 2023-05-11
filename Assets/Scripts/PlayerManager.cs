@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     public Transform cam;
 
     [HideInInspector]
-    public bool canMove = true;
+    public bool canMove;
     private float speed;
     public float runSpeed;
     public float walkSpeed;
@@ -70,6 +70,8 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         playerInstance = this;
+
+        canMove = true;
     }
 
     // Start is called before the first frame update
@@ -106,9 +108,12 @@ public class PlayerManager : MonoBehaviour
         // current angle for turn animations
         currentAngle = transform.eulerAngles.y;
 
-        // wasd/arrow inputs
-        x = Input.GetAxisRaw("Horizontal");
-        z = Input.GetAxisRaw("Vertical");
+        if (canMove)
+        {
+            // wasd/arrow inputs
+            x = Input.GetAxisRaw("Horizontal");
+            z = Input.GetAxisRaw("Vertical");
+        }
 
         direction = new Vector3(x, 0f, z).normalized;
 
