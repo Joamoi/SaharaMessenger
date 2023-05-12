@@ -3,7 +3,22 @@ guid: 3308290da55ea3d49a22ac96245a5631
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sakaalihommat
+    second: {fileID: 2100000, guid: f6ee7269bd049d94cb5ca3c454a71ae9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "silm\xE4"
+    second: {fileID: 2100000, guid: 07c3de67ecf4e1f4fa4c35b9be6a47e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "silm\xE4lappu"
+    second: {fileID: 2100000, guid: e2b10489cae23834d94394fc29a578e0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
