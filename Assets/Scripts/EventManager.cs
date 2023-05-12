@@ -68,8 +68,18 @@ public class EventManager : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E))
             {
-                PlayerManager.playerInstance.Eat();
-                Destroy(gameObject);
+                lineIndex++;
+                lineShown = false;
+
+                if (lineIndex == speechLines.Length)
+                {
+                    StartCoroutine("QuitTalk");
+                }
+
+                else
+                {
+                    StartCoroutine("NextLine");
+                }
             }
         }
     }
@@ -125,12 +135,19 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        npcText.text = "";
         npcTextField.SetActive(true);
 
         yield return new WaitForSeconds(0.2f);
 
         lineIndex = 0;
         speechLines = newSpeechLines;
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator NextLine()
+    {
         string currentLine = speechLines[lineIndex];
         npcText.text = "";
 
@@ -141,20 +158,7 @@ public class EventManager : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-
-    }
-
-    IEnumerator NextLine()
-    {
-        npcText.text = "";
-
-        yield return new WaitForSeconds(0.5f);
-
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
-        PlayerManager.playerInstance.canMove = true;
-        cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
-        cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
+        lineShown = true;
     }
 
     IEnumerator QuitTalk()
@@ -163,8 +167,8 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        hpBar.SetActive(true);
+        staminaBar.SetActive(true);
         PlayerManager.playerInstance.canMove = true;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
