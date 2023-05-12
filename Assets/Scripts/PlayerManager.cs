@@ -24,7 +24,8 @@ public class PlayerManager : MonoBehaviour
     private float currentAngle;
     private float targetAngle;
     private float dampedAngle;
-    private Vector3 direction;
+    [HideInInspector]
+    public Vector3 direction;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
     private bool turning = false;
@@ -37,6 +38,8 @@ public class PlayerManager : MonoBehaviour
     public static bool isGrounded;
 
     public Animator animator;
+    private float idleTime;
+    private float idleSwitchTime;
 
     private float hp = 100f;
     public GameObject hpMask;
@@ -89,6 +92,8 @@ public class PlayerManager : MonoBehaviour
         stamina100PosX = staminaMask.transform.position.x;
         stamina0PosX = stamina100PosX - 3.2f;
         staminaMax = stamina;
+
+        idleSwitchTime = Random.Range(8f, 20f);
     }
 
     // Update is called once per frame
@@ -154,9 +159,12 @@ public class PlayerManager : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        // walk and run animations
+        // animations
+        idleTime += Time.deltaTime;
+
         if (direction.magnitude >= 0.1f)
         {
+            idleTime = 0f;
             animator.SetBool("Walking", true);
 
             if (Input.GetKey(KeyCode.LeftShift))
@@ -173,6 +181,15 @@ public class PlayerManager : MonoBehaviour
         {
             animator.SetBool("Running", false);
             animator.SetBool("Walking", false);
+        }
+
+        if (idleTime >= idleSwitchTime)
+        {
+            Debug.Log("time = " + idleTime);
+            Debug.Log("switch time = " + idleSwitchTime);
+            animator.SetTrigger("IdleSwitch");
+            idleTime = 0f;
+            idleSwitchTime = Random.Range(8f, 20f);
         }
 
         // HP STAMINA FOOD REST
@@ -244,6 +261,10 @@ public class PlayerManager : MonoBehaviour
 
     public void Eat()
     {
+        animator.SetTrigger("Eat");
+        canMove = false;
+        StartCoroutine("EatDontMove");
+
         hp += healHPPerFood;
         stamina += healStaminaPerFood;
 
@@ -262,6 +283,8 @@ public class PlayerManager : MonoBehaviour
 
     public void Drink()
     {
+        animator.SetTrigger("Eat");
+
         hp += healHPPerDrink;
         stamina += healStaminaPerDrink;
 
@@ -276,6 +299,12 @@ public class PlayerManager : MonoBehaviour
         }
 
         drinkText.SetActive(false);
+    }
+
+    IEnumerator EatDontMove()
+    {
+        yield return new WaitForSeconds(2.5f);
+        canMove = true;
     }
 
     public void Rest()

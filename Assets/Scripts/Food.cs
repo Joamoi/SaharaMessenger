@@ -13,8 +13,11 @@ public class Food : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E))
             {
-                PlayerManager.playerInstance.Eat();
-                Destroy(gameObject);
+                if (PlayerManager.playerInstance.direction.magnitude < 0.05f)
+                {
+                    PlayerManager.playerInstance.Eat();
+                    StartCoroutine("DestroyFood");
+                }
             }
         }
     }
@@ -35,5 +38,11 @@ public class Food : MonoBehaviour
             canEat = false;
             PlayerManager.playerInstance.eatText.SetActive(false);
         }
+    }
+
+    IEnumerator DestroyFood()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
     }
 }
