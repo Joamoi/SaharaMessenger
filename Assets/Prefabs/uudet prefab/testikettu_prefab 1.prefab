@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 391922007086986445}
   - component: {fileID: 7691837971974835655}
   m_Layer: 0
-  m_Name: testikettu_prefab
+  m_Name: testikettu_prefab 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,9 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speechLines:
-  - Oli jo aikakin. Nyt vauhtia kilppari oottelee jo tuolla kaukana.
-  - "H\xF6rpp\xE4se tuosta l\xE4t\xE4k\xF6st\xE4 v\xE4h\xE4n juotavaa nii et l\xE4k\xE4hy
-    matkalla."
+  - "Eik\xF6 se riitt\xE4ny ku juttelit ton ekan kaverin kans, ala menn\xE4 siit\xE4!"
 --- !u!1001 &2502197645324917912
 PrefabInstance:
   m_ObjectHideFlags: 0
