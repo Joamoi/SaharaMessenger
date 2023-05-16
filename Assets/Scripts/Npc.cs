@@ -14,6 +14,8 @@ public class Npc : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E))
             {
+                canTalk = false;
+                PlayerManager.playerInstance.talkText.SetActive(false);
                 EventManager.eventInstance.StartCoroutine("Talk", speechLines);
             }
         }

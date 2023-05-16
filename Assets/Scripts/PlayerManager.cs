@@ -284,6 +284,8 @@ public class PlayerManager : MonoBehaviour
     public void Drink()
     {
         animator.SetTrigger("Eat");
+        canMove = false;
+        StartCoroutine("EatDontMove");
 
         hp += healHPPerDrink;
         stamina += healStaminaPerDrink;

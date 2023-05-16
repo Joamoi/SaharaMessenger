@@ -18,6 +18,7 @@ public class EventManager : MonoBehaviour
     public GameObject staminaBar;
     public GameObject npcTextField;
     public TextMeshProUGUI npcText;
+    public GameObject textArrow;
 
     private float camSpeedX;
     private float camSpeedY;
@@ -70,6 +71,7 @@ public class EventManager : MonoBehaviour
             {
                 lineIndex++;
                 lineShown = false;
+                textArrow.SetActive(false);
 
                 if (lineIndex == speechLines.Length)
                 {
@@ -111,7 +113,7 @@ public class EventManager : MonoBehaviour
 
         camTurnSpeed = 0.5f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 135f;
+        camTargetX = 125f;
         lerpFloat = 0f;
         camTurning = true;
 
@@ -133,8 +135,6 @@ public class EventManager : MonoBehaviour
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
 
-        yield return new WaitForSeconds(0.5f);
-
         npcText.text = "";
         npcTextField.SetActive(true);
 
@@ -155,10 +155,13 @@ public class EventManager : MonoBehaviour
         {
             npcText.text += currentLine[i];
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.03f);
         }
 
+        yield return new WaitForSeconds(0.5f);
+
         lineShown = true;
+        textArrow.SetActive(true);
     }
 
     IEnumerator QuitTalk()
