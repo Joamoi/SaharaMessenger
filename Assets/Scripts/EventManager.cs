@@ -9,6 +9,7 @@ public class EventManager : MonoBehaviour
     public static EventManager eventInstance;
 
     public GameObject fox;
+    public GameObject enemy;
     public Collider startRockCollider;
     public Transform startPos;
     public CinemachineFreeLook cineCam;
@@ -119,6 +120,47 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
+        PlayerManager.playerInstance.canMove = true;
+        startRockCollider.enabled = true;
+        cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
+        cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
+        hpBar.SetActive(true);
+        staminaBar.SetActive(true);
+    }
+
+    public IEnumerator EnemyPeek()
+    {
+        hpBar.SetActive(false);
+        staminaBar.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+        cineCam.m_XAxis.Value = 45f;
+        cineCam.m_YAxis.Value = 0.3f;
+
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
+        yield return new WaitForSeconds(1f);
+
+        camTurnSpeed = 1f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = 45f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(2f);
+
+        enemy.SetActive(true);
+        enemy.GetComponent<Animator>().SetTrigger("Peek");
+
+        camTurnSpeed = 1f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = 125f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(1f);
         PlayerManager.playerInstance.canMove = true;
         startRockCollider.enabled = true;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
