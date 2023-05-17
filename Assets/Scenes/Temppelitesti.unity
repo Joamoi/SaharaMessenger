@@ -1036,7 +1036,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &330585544
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1095,7 +1095,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.14098598, y: 0.00000003712587, z: -0.0000000052870357, w: 0.99001163}
+  m_LocalRotation: {x: 0.14098598, y: -0.00000003712587, z: 0.0000000052870357, w: 0.99001163}
   m_LocalPosition: {x: -0.664, y: 7.406, z: -5.5699997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3705,10 +3705,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1080948997}
   cam: {fileID: 330585546}
+  canMove: 0
   runSpeed: 2
   walkSpeed: 1
   gravity: -10
   jumpHeight: 0.6
+  x: 0
+  z: 0
+  direction: {x: 0, y: 0, z: 0}
   turnSmoothTime: 0.1
   groundCheck: {fileID: 1680338427}
   checkSphereRadius: 0.2
@@ -5346,7 +5350,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609718099}
-  m_LocalRotation: {x: 0.14098597, y: 0.000000017034516, z: -0.0000000024258582, w: 0.99001163}
+  m_LocalRotation: {x: 0.14098597, y: -0.00000001703452, z: 0.0000000024258586, w: 0.99001163}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
