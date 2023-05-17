@@ -17,25 +17,28 @@ public class PlayerManager : MonoBehaviour
     public float gravity;
     public float jumpHeight;
 
+
     [HideInInspector]
     public float x;
     [HideInInspector]
     public float z;
-    private float currentAngle;
     private float targetAngle;
     private float dampedAngle;
     [HideInInspector]
     public Vector3 direction;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
-    private bool turning = false;
 
     public Transform groundCheck;
     public float checkSphereRadius;
     public float groundedSpeedY;
     public LayerMask groundMask;
     private Vector3 velocity;
-    public static bool isGrounded;
+    [HideInInspector]
+    public bool isGrounded;
+    [HideInInspector]
+    public bool inAir = false;
+
 
     public Animator animator;
     private float idleTime;
@@ -110,9 +113,6 @@ public class PlayerManager : MonoBehaviour
             velocity.y = groundedSpeedY;
         }
 
-        // current angle for turn animations
-        currentAngle = transform.eulerAngles.y;
-
         if (canMove)
         {
             // wasd/arrow inputs
@@ -141,6 +141,7 @@ public class PlayerManager : MonoBehaviour
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
                 animator.SetTrigger("Jump");
+                StartCoroutine("InAir");
             }
 
             // sprint
@@ -190,6 +191,12 @@ public class PlayerManager : MonoBehaviour
             animator.SetTrigger("IdleSwitch");
             idleTime = 0f;
             idleSwitchTime = Random.Range(8f, 20f);
+        }
+
+        if (inAir && isGrounded)
+        {
+            animator.SetTrigger("Landing");
+            inAir = false;
         }
 
         // HP STAMINA FOOD REST
@@ -323,5 +330,12 @@ public class PlayerManager : MonoBehaviour
         {
             stamina = 100;
         }
+    }
+
+    IEnumerator InAir()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        inAir = true;
     }
 }
