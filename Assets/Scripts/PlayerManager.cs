@@ -17,7 +17,6 @@ public class PlayerManager : MonoBehaviour
     public float gravity;
     public float jumpHeight;
 
-
     [HideInInspector]
     public float x;
     [HideInInspector]
@@ -28,6 +27,12 @@ public class PlayerManager : MonoBehaviour
     public Vector3 direction;
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
+    public float turnSmoothTime2 = 0.15f;
+    private float turnSmoothVelocity2;
+    public float rotSpeed1;
+    public float rotSpeed2;
+
+    public Transform rotationSource;
 
     public Transform groundCheck;
     public float checkSphereRadius;
@@ -125,11 +130,32 @@ public class PlayerManager : MonoBehaviour
         if (direction.magnitude >= 0.1f)
         {
             targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            dampedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, dampedAngle, 0f);
+
+            float currentAngle = transform.eulerAngles.y;
+
+            if (Mathf.Abs(targetAngle - currentAngle) > 170f)
+            {
+                targetAngle -= 2f;
+            }
+
+            //dampedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+
+            //float dampedTurnAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity2, turnSmoothTime2);
+            //rotationSource.rotation = Quaternion.Euler(0f, dampedTurnAngle, 0f);
+
+            //transform.rotation = Quaternion.Euler(0f, dampedAngle, 0f);
+
+            rotationSource.rotation = Quaternion.Lerp(rotationSource.rotation, Quaternion.Euler(0f, targetAngle, 0f), rotSpeed2 * Time.deltaTime);
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, targetAngle, 0f), rotSpeed1 * Time.deltaTime);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir * speed * Time.deltaTime);
+
+            //float currentAngle = transform.eulerAngles.y;
+            //float angleLeft = targetAngle - currentAngle;
+            //float turnAngle = angleLeft;
+            //rotationSource.localRotation = Quaternion.Euler(0f, turnAngle, 0f);
         }
 
         if (isGrounded)
