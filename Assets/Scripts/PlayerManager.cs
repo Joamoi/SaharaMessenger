@@ -135,6 +135,7 @@ public class PlayerManager : MonoBehaviour
 
             if (Mathf.Abs(targetAngle - currentAngle) > 170f)
             {
+                // takaosan pyörähdys nopeaksi tämän sijaan?
                 targetAngle -= 2f;
             }
 
@@ -147,6 +148,7 @@ public class PlayerManager : MonoBehaviour
 
             rotationSource.rotation = Quaternion.Lerp(rotationSource.rotation, Quaternion.Euler(0f, targetAngle, 0f), rotSpeed2 * Time.deltaTime);
 
+            // targetiksi rotationsource.rotation?
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, targetAngle, 0f), rotSpeed1 * Time.deltaTime);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
