@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour
 
     public CharacterController controller;
     public Transform cam;
+    [HideInInspector]
+    public bool gameIsPaused = false;
 
     [HideInInspector]
     public bool canMove;
