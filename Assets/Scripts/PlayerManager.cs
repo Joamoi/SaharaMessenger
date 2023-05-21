@@ -80,6 +80,10 @@ public class PlayerManager : MonoBehaviour
     public GameObject talkText;
     public GameObject restText;
 
+    public GameObject chaseJackal1;
+    public GameObject chaseJackal2;
+    public GameObject chaseJackal3;
+
     void Awake()
     {
         playerInstance = this;
@@ -360,6 +364,26 @@ public class PlayerManager : MonoBehaviour
         {
             stamina = 100;
         }
+    }
+
+    public IEnumerator Death()
+    {
+        chaseJackal1.GetComponent<Jackal>().StopChase();
+        chaseJackal2.GetComponent<Jackal>().StopChase();
+        chaseJackal3.GetComponent<Jackal>().StopChase();
+
+        x = 0f;
+        z = 0f;
+        canMove = false;
+        animator.SetBool("Running", false);
+        animator.SetBool("Walking", false);
+        animator.SetTrigger("Death");
+
+        yield return new WaitForSeconds(5f);
+
+        //fade
+        //respawn at checkpoint
+        // reset anything necessary: hide jackals, fix dropfloor, heal, ...
     }
 
     IEnumerator InAir()
