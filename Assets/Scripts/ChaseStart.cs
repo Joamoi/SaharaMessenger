@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyChase : MonoBehaviour
+public class ChaseStart : MonoBehaviour
 {
     public string[] speechLines;
 
@@ -11,6 +11,7 @@ public class EnemyChase : MonoBehaviour
         if (other.tag == "Player")
         {
             EventManager.eventInstance.StartCoroutine("EnemyChaseTalk", speechLines);
+            gameObject.SetActive(false);
         }
     }
 }

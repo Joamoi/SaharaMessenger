@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
 
     [HideInInspector]
     public bool canMove;
+    [HideInInspector]
+    public bool noDrain = false;
     private float speed;
     public float runSpeed;
     public float walkSpeed;
@@ -233,47 +235,49 @@ public class PlayerManager : MonoBehaviour
             inAir = false;
         }
 
-        // HP STAMINA FOOD REST
-
         // stamina drain
-        if (direction.magnitude >= 0.1f)
-        {
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                if (stamina > 0)
-                {
-                    stamina -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
-                }
 
+        if (!noDrain)
+        {
+            if (direction.magnitude >= 0.1f)
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    if (stamina > 0)
+                    {
+                        stamina -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    }
+
+                    else
+                    {
+                        hp -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    }
+                }
                 else
                 {
-                    hp -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    if (stamina > 0)
+                    {
+                        stamina -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    }
+
+                    else
+                    {
+                        hp -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    }
                 }
             }
+
             else
             {
                 if (stamina > 0)
                 {
-                    stamina -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    stamina -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
                 }
 
                 else
                 {
-                    hp -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    hp -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
                 }
-            }
-        }
-
-        else
-        {
-            if (stamina > 0)
-            {
-                stamina -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
-            }
-
-            else
-            {
-                hp -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
             }
         }
 
@@ -303,6 +307,8 @@ public class PlayerManager : MonoBehaviour
     public void Eat()
     {
         animator.SetTrigger("Eat");
+        x = 0f;
+        z = 0f;
         canMove = false;
         StartCoroutine("EatDontMove");
 
@@ -325,6 +331,8 @@ public class PlayerManager : MonoBehaviour
     public void Drink()
     {
         animator.SetTrigger("Eat");
+        x = 0f;
+        z = 0f;
         canMove = false;
         StartCoroutine("EatDontMove");
 

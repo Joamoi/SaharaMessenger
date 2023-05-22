@@ -10,6 +10,8 @@ public class Jackal : MonoBehaviour
     private bool chasing = false;
     public float speed;
     public LayerMask playerLayer;
+    public LayerMask enemyLayer;
+    public float startDelay;
 
     private Vector3 direction;
     private float targetAngle;
@@ -17,6 +19,12 @@ public class Jackal : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundMask;
     private bool isGrounded;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        controller.detectCollisions = false;
+    }
 
     // Update is called once per frame
     void Update()
@@ -30,19 +38,24 @@ public class Jackal : MonoBehaviour
             velocity.y = -3f;
         }
 
+        direction = (fox.transform.position - transform.position).normalized;
+        targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+        transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
         if (chasing)
         {
-            direction = (fox.transform.position - transform.position).normalized;
-            targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-
-            transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir * speed * Time.deltaTime);
 
             if (Physics.OverlapSphere(transform.position, 1f, playerLayer).Length != 0)
             {
                 PlayerManager.playerInstance.StartCoroutine("Death");
+            }
+
+            if (Physics.OverlapSphere(transform.position, 0.5f, enemyLayer).Length != 0)
+            {
+                //StartCoroutine("Pause");
             }
         }
 
@@ -61,8 +74,10 @@ public class Jackal : MonoBehaviour
         }
     }
 
-    public void StartChase()
+    public IEnumerator StartChase()
     {
+        yield return new WaitForSeconds(startDelay);
+
         chasing = true;
         animator.SetBool("Running", true);
     }
@@ -71,5 +86,16 @@ public class Jackal : MonoBehaviour
     {
         chasing = false;
         animator.SetBool("Running", false);
+    }
+
+    IEnumerator Pause()
+    {
+        chasing = false;
+        animator.SetBool("Running", false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        chasing = true;
+        animator.SetBool("Running", true);
     }
 }

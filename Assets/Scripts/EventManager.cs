@@ -108,6 +108,7 @@ public class EventManager : MonoBehaviour
         hpBar.SetActive(false);
         staminaBar.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
         cineCam.m_XAxis.Value = 45f;
@@ -139,6 +140,7 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         PlayerManager.playerInstance.canMove = true;
+        PlayerManager.playerInstance.noDrain = false;
         startRockCollider.enabled = true;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
@@ -151,6 +153,7 @@ public class EventManager : MonoBehaviour
         hpBar.SetActive(false);
         staminaBar.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
 
@@ -188,6 +191,7 @@ public class EventManager : MonoBehaviour
         peekJackal.SetActive(false);
 
         PlayerManager.playerInstance.canMove = true;
+        PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
         hpBar.SetActive(true);
@@ -199,6 +203,7 @@ public class EventManager : MonoBehaviour
         hpBar.SetActive(false);
         staminaBar.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
 
@@ -215,11 +220,19 @@ public class EventManager : MonoBehaviour
         camStartX = cineCam.m_XAxis.Value;
         camTargetX = 180f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = 0f;
+        camTargetY = 0.3f;
         lerpFloat = 0f;
         camTurning = true;
 
         yield return new WaitForSeconds(1f);
+
+        PlayerManager.playerInstance.z = 1f;
+
+        yield return new WaitForSeconds(0.7f);
+
+        PlayerManager.playerInstance.z = 0f;
+
+        yield return new WaitForSeconds(0.5f);
 
         chaseTalk = true;
         npcText.text = "";
@@ -238,13 +251,13 @@ public class EventManager : MonoBehaviour
         chaseTalk = false;
         npcTextField.SetActive(false);
 
-        chaseJackal1.GetComponent<Jackal>().StartChase();
-        chaseJackal2.GetComponent<Jackal>().StartChase();
-        chaseJackal3.GetComponent<Jackal>().StartChase();
+        chaseJackal1.GetComponent<Jackal>().StartCoroutine("StartChase");
+        chaseJackal2.GetComponent<Jackal>().StartCoroutine("StartChase");
+        chaseJackal3.GetComponent<Jackal>().StartCoroutine("StartChase");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.2f);
 
-        camTurnTime = 0.5f;
+        camTurnTime = 0.3f;
         camStartX = cineCam.m_XAxis.Value;
         camTargetX = 0f;
         camStartY = cineCam.m_YAxis.Value;
@@ -252,9 +265,10 @@ public class EventManager : MonoBehaviour
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
 
         PlayerManager.playerInstance.canMove = true;
+        PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
         hpBar.SetActive(true);
@@ -266,6 +280,7 @@ public class EventManager : MonoBehaviour
         hpBar.SetActive(false);
         staminaBar.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
 
@@ -307,7 +322,15 @@ public class EventManager : MonoBehaviour
         hpBar.SetActive(true);
         staminaBar.SetActive(true);
         PlayerManager.playerInstance.canMove = true;
+        PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
+    }
+
+    public void StopChase()
+    {
+        chaseJackal1.GetComponent<Jackal>().StopChase();
+        chaseJackal2.GetComponent<Jackal>().StopChase();
+        chaseJackal3.GetComponent<Jackal>().StopChase();
     }
 }
