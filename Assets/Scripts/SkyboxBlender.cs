@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class SkyboxBlender : MonoBehaviour {
 
     [SerializeField] public enum BlendMode { Linear, Smoothstep, Maximum, Add, Substract, Multiply }
