@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8104960762499628540
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -20,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: rikkiseina
+  m_Name: ruukku2
   m_Shader: {fileID: -6465566751694194690, guid: ca6f39be3c92b4441b591ad4ca1258c2,
     type: 3}
   m_ValidKeywords: []
@@ -34,6 +21,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Mask_R_Emission:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -63,7 +58,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: c6c34179e522b2649be91bac5d9836b7, type: 3}
+        m_Texture: {fileID: 2800000, guid: f1d29089b4169284e9c1a5134d0dcca8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -100,7 +95,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Brightness_Rim: 2
     - LIGHTMAP: 0
+    - Rim_Power: 5
+    - Toon_Ramp_Offset: 0.5
+    - Toon_Ramp_Smoothness: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -118,7 +117,7 @@ Material:
     - _LightProbeContribution: 3.5
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineDepthSensitivity: 0.319
+    - _OutlineDepthSensitivity: 0.195
     - _OutlineNormalsSensitivity: 1
     - _OutlineThickness: 1
     - _Parallax: 0.005
@@ -133,12 +132,26 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Toon_Ramp_Tint: {r: 0.49056596, g: 0.49056596, b: 0.49056596, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 0.83137256, g: 0.83137256, b: 0.83137256, a: 0}
+    - _MainColor: {r: 1, g: 0.68235296, b: 0.63529414, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
+--- !u!114 &302227177276272129
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
