@@ -17,16 +17,23 @@ public class EventManager : MonoBehaviour
     public GameObject chaseJackal2;
     public GameObject chaseJackal3;
     public Animator peekEnemyAnimator;
-    public Collider startRockCollider;
+    public Collider startRockCollider1;
+    public Collider startRockCollider2;
     public Transform startPos;
     public CinemachineFreeLook cineCam;
     public bool playStartCutscene;
 
+    public GameObject fade;
     public GameObject hpBar;
     public GameObject staminaBar;
     public GameObject npcTextField;
+    public GameObject npcTextObject;
     public TextMeshProUGUI npcText;
     public GameObject textArrow;
+    public GameObject choice1;
+    public GameObject choice2;
+    public TextMeshProUGUI choiceText1;
+    public TextMeshProUGUI choiceText2;
 
     private float camSpeedX;
     private float camSpeedY;
@@ -41,13 +48,24 @@ public class EventManager : MonoBehaviour
     string[] speechLines;
     private bool lineShown = false;
     private int lineIndex;
-    private bool chaseTalk = false;
-    private bool startTalk1 = false;
-    private bool startTalk2 = false;
+    private string currentConv;
     public string[] oldFoxLines1;
     public string[] oldFoxLines2;
-    public string[] playerChoices;
-    private bool choicesShown = false;
+    public string[] oldFoxLines3;
+    public string[] oldFoxLines4;
+    public string[] oldFoxLines5;
+    public string[] oldFoxLines6;
+    public string[] oldFoxLines7;
+    public string[] oldFoxLines8;
+    public string[] oldFoxLines9;
+    public string[] oldFoxLines10;
+    private bool choiceMade = false;
+    private int choiceValue = 0;
+
+    public GameObject oldFoxFace;
+    public GameObject oldFoxSmilingFace;
+    public GameObject rabbitFace;
+    public GameObject rabbitSmilingFace;
 
     private Color32 originalAmbientColor;
     private Color32 targetColor;
@@ -64,9 +82,11 @@ public class EventManager : MonoBehaviour
         camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
         camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
 
+        //fade.SetActive(true);
+
         if (playStartCutscene)
         {
-            StartCoroutine("StartCutScene");
+            StartCoroutine("OldFox1");
         }
 
         else
@@ -111,28 +131,48 @@ public class EventManager : MonoBehaviour
             {
                 lineIndex++;
                 lineShown = false;
+                npcTextObject.SetActive(false);
                 textArrow.SetActive(false);
 
                 if (lineIndex == speechLines.Length)
                 {
-                    if (chaseTalk)
+                    switch (currentConv)
                     {
-                        StartCoroutine("Chase");
-                    }
+                        case "normal":
+                            StartCoroutine("QuitTalk");
+                            break;
 
-                    else if (startTalk2)
-                    {
-                        StartCoroutine("StartTalk2Done");
-                    }
+                        case "oldFox1":
+                            StartCoroutine("OldFox2");
+                            break;
 
-                    else if (startTalk1)
-                    {
-                        StartCoroutine("StartTalk1Done");
-                    }
+                        case "oldFox3":
+                            StartCoroutine("OldFox4");
+                            break;
 
-                    else
-                    {
-                        StartCoroutine("QuitTalk");
+                        case "oldFox4":
+                            StartCoroutine("OldFox5");
+                            break;
+
+                        case "oldFox6":
+                            StartCoroutine("OldFox7");
+                            break;
+
+                        case "oldFox8":
+                            StartCoroutine("OldFox9");
+                            break;
+
+                        case "oldFox9":
+                            StartCoroutine("OldFox10");
+                            break;
+
+                        case "chase":
+                            StartCoroutine("Chase");
+                            break;
+
+                        default:
+                            StartCoroutine("QuitTalk");
+                            break;
                     }
                 }
 
@@ -143,18 +183,39 @@ public class EventManager : MonoBehaviour
             }
         }
 
-        if (choicesShown)
+        if (choiceMade)
         {
-            Cursor.visible = true;
-        }
-
-        else
-        {
+            choiceMade = false;
+            choice1.SetActive(false);
+            choice2.SetActive(false);
             Cursor.visible = false;
+
+            switch (currentConv)
+            {
+                case "oldFox2":
+                    StartCoroutine("OldFox3");
+                    break;
+
+                case "oldFox5":
+                    StartCoroutine("OldFox6");
+                    break;
+
+                case "oldFox7":
+                    StartCoroutine("OldFox8");
+                    break;
+
+                case "oldFox10":
+                    StartCoroutine("OldFox11");
+                    break;
+
+                default:
+                    StartCoroutine("QuitTalk");
+                    break;
+            }
         }
     }
 
-    IEnumerator StartCutScene()
+    IEnumerator OldFox1()
     {
         hpBar.SetActive(false);
         staminaBar.SetActive(false);
@@ -162,15 +223,16 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
-        cineCam.m_XAxis.Value = 45f;
+        cineCam.m_XAxis.Value = 255f;
         cineCam.m_YAxis.Value = 0.3f;
 
-        startRockCollider.enabled = false;
+        startRockCollider1.enabled = false;
+        startRockCollider2.enabled = false;
         fox.transform.position = startPos.position;
 
         yield return new WaitForSeconds(2f);
 
-        PlayerManager.playerInstance.x = 1f;
+        PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = -1f;
 
         yield return new WaitForSeconds(1.5f);
@@ -178,9 +240,36 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
-        PlayerManager.playerInstance.x = 1f;
+        currentConv = "oldFox1";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = oldFoxLines1;
+        oldFoxFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator OldFox2()
+    {
+        oldFoxFace.SetActive(false);
+        npcTextField.SetActive(false);
+
+        camTurnTime = 1f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = -170f;
+        camStartY = cineCam.m_YAxis.Value;
+        camTargetY = 0f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(1.5f);
+
+        PlayerManager.playerInstance.x = -1f;
         PlayerManager.playerInstance.z = 1f;
 
         oldFox.GetComponent<OldFox>().Walk();
@@ -196,21 +285,121 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        startTalk1 = true;
-        npcText.text = "";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "oldFox2";
+        choiceText1.text = oldFoxLines2[0];
+        choiceText2.text = oldFoxLines2[1];
+        choice1.SetActive(true);
+        choice2.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator OldFox3()
+    {
+        currentConv = "oldFox3";
         npcTextField.SetActive(true);
 
         yield return new WaitForSeconds(0.2f);
 
         lineIndex = 0;
-        speechLines = oldFoxLines1;
+        speechLines = oldFoxLines3;
+        oldFoxSmilingFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
-    IEnumerator StartTalk1Done()
+    IEnumerator OldFox4()
     {
         npcTextField.SetActive(false);
+        oldFoxSmilingFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        oldFoxScarf.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        currentConv = "oldFox4";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = oldFoxLines4;
+        oldFoxFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator OldFox5()
+    {
+        oldFoxFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "oldFox5";
+        choiceText1.text = oldFoxLines5[0];
+        choiceText2.text = oldFoxLines5[1];
+        choice1.SetActive(true);
+        choice2.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator OldFox6()
+    {
+        currentConv = "oldFox6";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = oldFoxLines6;
+        oldFoxFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator OldFox7()
+    {
+        oldFoxFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "oldFox7";
+        choiceText1.text = oldFoxLines7[0];
+        choice1.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator OldFox8()
+    {
+        currentConv = "oldFox8";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = oldFoxLines8;
+        oldFoxFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator OldFox9()
+    {
+        npcTextField.SetActive(false);
+        oldFoxFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        oldFox.GetComponent<OldFox>().Walk();
+
+        yield return new WaitForSeconds(0.2f);
+
+        oldFox.GetComponent<OldFox>().Stop();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -220,37 +409,48 @@ public class EventManager : MonoBehaviour
 
         scarf.SetActive(true);
 
-        yield return new WaitForSeconds(0.5f);
-
-        startTalk2 = true;
-        npcText.text = "";
+        currentConv = "oldFox9";
         npcTextField.SetActive(true);
 
         yield return new WaitForSeconds(0.2f);
 
         lineIndex = 0;
-        speechLines = oldFoxLines2;
+        speechLines = oldFoxLines9;
+        oldFoxSmilingFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
-    IEnumerator StartTalk2Done()
+    IEnumerator OldFox10()
+    {
+        oldFoxSmilingFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "oldFox10";
+        choiceText1.text = oldFoxLines10[0];
+        choice1.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator OldFox11()
     {
         npcTextField.SetActive(false);
 
-        camTurnTime = 2f;
+        camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 125f;
+        camTargetX = -285f;
         camStartY = cineCam.m_YAxis.Value;
         camTargetY = 0.3f;
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
         PlayerManager.playerInstance.canMove = true;
         PlayerManager.playerInstance.noDrain = false;
-        startRockCollider.enabled = true;
+        startRockCollider1.enabled = true;
+        startRockCollider2.enabled = true;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
         hpBar.SetActive(true);
@@ -343,7 +543,7 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        chaseTalk = true;
+        currentConv = "chase";
         npcText.text = "";
         npcTextField.SetActive(true);
 
@@ -357,7 +557,6 @@ public class EventManager : MonoBehaviour
 
     public IEnumerator Chase()
     {
-        chaseTalk = false;
         npcTextField.SetActive(false);
 
         chaseJackal1.GetComponent<Jackal>().StartCoroutine("StartChase");
@@ -408,12 +607,13 @@ public class EventManager : MonoBehaviour
     {
         string currentLine = speechLines[lineIndex];
         npcText.text = "";
+        npcTextObject.SetActive(true);
 
         for (int i = 0; i < currentLine.Length; i++)
         {
             npcText.text += currentLine[i];
 
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.02f);
         }
 
         yield return new WaitForSeconds(0.5f);
@@ -441,5 +641,17 @@ public class EventManager : MonoBehaviour
         chaseJackal1.GetComponent<Jackal>().StopChase();
         chaseJackal2.GetComponent<Jackal>().StopChase();
         chaseJackal3.GetComponent<Jackal>().StopChase();
+    }
+
+    public void Choice1()
+    {
+        choiceValue = 1;
+        choiceMade = true;
+    }
+
+    public void Choice2()
+    {
+        choiceValue = 2;
+        choiceMade = true;
     }
 }

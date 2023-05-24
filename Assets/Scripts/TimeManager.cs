@@ -25,7 +25,7 @@ public class TimeManager : MonoBehaviour
     private float transitionTime = 0f;
     private bool colorChanging = false;
 
-    public GameObject skybox;
+    //public GameObject skybox;
     private float blend;
 
     // Start is called before the first frame update
@@ -51,7 +51,7 @@ public class TimeManager : MonoBehaviour
             }
 
             blend = ((1f - (transitionLength - transitionTime)) / transitionLength) + 1f;
-            skybox.GetComponent<SkyboxBlender>().blend = blend;
+            //skybox.GetComponent<SkyboxBlender>().blend = blend;
         }
 
         if (nightToDay)
@@ -67,7 +67,7 @@ public class TimeManager : MonoBehaviour
             }
 
             blend = (transitionLength - transitionTime) / (transitionLength);
-            skybox.GetComponent<SkyboxBlender>().blend = blend;
+            //skybox.GetComponent<SkyboxBlender>().blend = blend;
         }
     }
 
