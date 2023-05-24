@@ -47,6 +47,8 @@ public class EventManager : MonoBehaviour
     public string[] oldFoxLines1;
     public string[] oldFoxLines2;
 
+    private Color32 originalAmbientColor;
+
     void Awake()
     {
         eventInstance = this;
@@ -67,11 +69,24 @@ public class EventManager : MonoBehaviour
         {
             scarf.SetActive(true);
         }
+
+        originalAmbientColor = RenderSettings.ambientLight;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // for testing
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            RenderSettings.ambientLight = originalAmbientColor;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            RenderSettings.ambientLight = new Color32(50, 50, 50, 255);
+        }
+
         if (camTurning)
         {
             lerpFloat += Time.deltaTime;
