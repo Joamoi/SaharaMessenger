@@ -46,8 +46,12 @@ public class EventManager : MonoBehaviour
     private bool startTalk2 = false;
     public string[] oldFoxLines1;
     public string[] oldFoxLines2;
+    public string[] playerChoices;
+    private bool choicesShown = false;
 
     private Color32 originalAmbientColor;
+    private Color32 targetColor;
+    private bool colorChanging = false;
 
     void Awake()
     {
@@ -84,7 +88,7 @@ public class EventManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            RenderSettings.ambientLight = new Color32(0, 0, 0, 255);
+            targetColor = new Color32(50, 50, 50, 255);
         }
 
         if (camTurning)
@@ -137,6 +141,16 @@ public class EventManager : MonoBehaviour
                     StartCoroutine("NextLine");
                 }
             }
+        }
+
+        if (choicesShown)
+        {
+            Cursor.visible = true;
+        }
+
+        else
+        {
+            Cursor.visible = false;
         }
     }
 
