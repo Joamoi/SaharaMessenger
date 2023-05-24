@@ -84,7 +84,7 @@ public class EventManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            RenderSettings.ambientLight = new Color32(50, 50, 50, 255);
+            RenderSettings.ambientLight = new Color32(0, 0, 0, 255);
         }
 
         if (camTurning)
