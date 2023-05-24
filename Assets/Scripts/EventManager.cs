@@ -9,6 +9,9 @@ public class EventManager : MonoBehaviour
     public static EventManager eventInstance;
 
     public GameObject fox;
+    public GameObject oldFox;
+    public GameObject scarf;
+    public GameObject oldFoxScarf;
     public GameObject peekJackal;
     public GameObject chaseJackal1;
     public GameObject chaseJackal2;
@@ -39,6 +42,10 @@ public class EventManager : MonoBehaviour
     private bool lineShown = false;
     private int lineIndex;
     private bool chaseTalk = false;
+    private bool startTalk1 = false;
+    private bool startTalk2 = false;
+    public string[] oldFoxLines1;
+    public string[] oldFoxLines2;
 
     void Awake()
     {
@@ -54,6 +61,11 @@ public class EventManager : MonoBehaviour
         if (playStartCutscene)
         {
             StartCoroutine("StartCutScene");
+        }
+
+        else
+        {
+            scarf.SetActive(true);
         }
     }
 
@@ -89,6 +101,16 @@ public class EventManager : MonoBehaviour
                         StartCoroutine("Chase");
                     }
 
+                    else if (startTalk2)
+                    {
+                        StartCoroutine("StartTalk2Done");
+                    }
+
+                    else if (startTalk1)
+                    {
+                        StartCoroutine("StartTalk1Done");
+                    }
+
                     else
                     {
                         StartCoroutine("QuitTalk");
@@ -122,12 +144,70 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 1f;
         PlayerManager.playerInstance.z = -1f;
 
+        yield return new WaitForSeconds(1.5f);
+
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
         yield return new WaitForSeconds(2f);
+
+        PlayerManager.playerInstance.x = 1f;
+        PlayerManager.playerInstance.z = 1f;
+
+        oldFox.GetComponent<OldFox>().Walk();
+
+        yield return new WaitForSeconds(0.5f);
 
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
         yield return new WaitForSeconds(0.5f);
+
+        oldFox.GetComponent<OldFox>().Stop();
+
+        yield return new WaitForSeconds(0.5f);
+
+        startTalk1 = true;
+        npcText.text = "";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = oldFoxLines1;
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator StartTalk1Done()
+    {
+        npcTextField.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        oldFoxScarf.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        scarf.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        startTalk2 = true;
+        npcText.text = "";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = oldFoxLines2;
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator StartTalk2Done()
+    {
+        npcTextField.SetActive(false);
 
         camTurnTime = 2f;
         camStartX = cineCam.m_XAxis.Value;
