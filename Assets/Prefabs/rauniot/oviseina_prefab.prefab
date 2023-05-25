@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4601454381726655467}
+  - component: {fileID: 3226187461882970462}
+  - component: {fileID: 1276068200494858527}
   m_Layer: 0
   m_Name: oviseina_prefab
   m_TagString: Untagged
@@ -32,6 +34,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3226187461882970462
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3787657913389758801}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7380829, y: 3.6751974, z: 0.34040356}
+  m_Center: {x: -1.6047783, y: 1.8292991, z: 0.03236246}
+--- !u!65 &1276068200494858527
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3787657913389758801}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7343178, y: 3.691334, z: 0.3337021}
+  m_Center: {x: 1.294611, y: 1.8419169, z: 0.06488037}
 --- !u!1 &4303265481216393431
 GameObject:
   m_ObjectHideFlags: 0
