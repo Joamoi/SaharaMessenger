@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2751225311767226317}
   - component: {fileID: 903659056033111522}
+  - component: {fileID: 1935170082029675051}
+  - component: {fileID: 8028308189943280761}
   m_Layer: 0
   m_Name: pilari_prefab
   m_TagString: Untagged
@@ -44,8 +46,35 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.94, y: 3.98, z: 0.88}
-  m_Center: {x: 0, y: 1.99, z: 0}
+  m_Size: {x: 0.94, y: 0.33397055, z: 0.88}
+  m_Center: {x: 0, y: 0.16698527, z: 0}
+--- !u!65 &1935170082029675051
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271161943116922231}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.94, y: 0.3339705, z: 0.88}
+  m_Center: {x: 0, y: 3.84, z: 0}
+--- !u!136 &8028308189943280761
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271161943116922231}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3082266
+  m_Height: 3.9808226
+  m_Direction: 1
+  m_Center: {x: 0.000044822693, y: 2.0204306, z: -0.01543951}
 --- !u!1 &6154295788150014403
 GameObject:
   m_ObjectHideFlags: 0
