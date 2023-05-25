@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 292735551717516975}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: kivi3_prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,10 +109,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 84.391
       objectReference: {fileID: 0}
+    - target: {fileID: 436090381317150396, guid: 4a8136b1fb0894749b7123d26f0809a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 645521049821608145, guid: 4a8136b1fb0894749b7123d26f0809a1,
         type: 3}
       propertyPath: m_Name
       value: kivi3 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 645521049821608145, guid: 4a8136b1fb0894749b7123d26f0809a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6317345914941664212, guid: 4a8136b1fb0894749b7123d26f0809a1,
         type: 3}

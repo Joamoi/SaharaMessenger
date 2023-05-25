@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7746626301205573520}
   - component: {fileID: 1572674828335495423}
   - component: {fileID: 7877445677684249463}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: kivi1.decimate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3548077965087122519}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: kivi1_prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8099342038717795124}
   - component: {fileID: 1831097979061395037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: kivi1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
