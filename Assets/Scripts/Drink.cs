@@ -11,7 +11,7 @@ public class Drink : MonoBehaviour
     {
         if (canDrink)
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 PlayerManager.playerInstance.Drink();
             }

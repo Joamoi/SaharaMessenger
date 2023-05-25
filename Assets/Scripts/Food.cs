@@ -11,7 +11,7 @@ public class Food : MonoBehaviour
     {
         if (canEat)
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 PlayerManager.playerInstance.Eat();
                 StartCoroutine("DestroyFood");
