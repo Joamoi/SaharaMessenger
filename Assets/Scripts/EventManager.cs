@@ -24,6 +24,8 @@ public class EventManager : MonoBehaviour
     public bool playStartCutscene;
 
     public GameObject fade;
+    public GameObject fadeAnimator;
+
     public GameObject hpBar;
     public GameObject staminaBar;
     public GameObject npcTextField;
@@ -49,6 +51,9 @@ public class EventManager : MonoBehaviour
     private bool lineShown = false;
     private int lineIndex;
     private string currentConv;
+    private bool choiceMade = false;
+    private int choiceValue = 0;
+
     public string[] oldFoxLines1;
     public string[] oldFoxLines2;
     public string[] oldFoxLines3;
@@ -59,8 +64,16 @@ public class EventManager : MonoBehaviour
     public string[] oldFoxLines8;
     public string[] oldFoxLines9;
     public string[] oldFoxLines10;
-    private bool choiceMade = false;
-    private int choiceValue = 0;
+
+    public string[] rabbitLines1;
+    public string[] rabbitLines2;
+    public string[] rabbitLines3;
+    public string[] rabbitLines4;
+    public string[] rabbitLines5;
+    public string[] rabbitLines6;
+    public string[] rabbitLines7;
+    public string[] rabbitLines8;
+    public string[] rabbitLines9;
 
     public GameObject oldFoxFace;
     public GameObject oldFoxSmilingFace;
@@ -82,7 +95,8 @@ public class EventManager : MonoBehaviour
         camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
         camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
 
-        //fade.SetActive(true);
+        fade.SetActive(true);
+        StartCoroutine("HideFade", 3f);
 
         if (playStartCutscene)
         {
@@ -166,6 +180,26 @@ public class EventManager : MonoBehaviour
                             StartCoroutine("OldFox10");
                             break;
 
+                        case "rabbit1":
+                            StartCoroutine("rabbit2");
+                            break;
+
+                        case "rabbit3":
+                            StartCoroutine("rabbit4");
+                            break;
+
+                        case "rabbit4":
+                            StartCoroutine("rabbit6");
+                            break;
+
+                        case "rabbit6":
+                            StartCoroutine("rabbit7");
+                            break;
+
+                        case "rabbit8":
+                            StartCoroutine("rabbit9");
+                            break;
+
                         case "chase":
                             StartCoroutine("Chase");
                             break;
@@ -193,7 +227,10 @@ public class EventManager : MonoBehaviour
             switch (currentConv)
             {
                 case "oldFox2":
-                    StartCoroutine("OldFox3");
+                    if (choiceValue == 1)
+                        StartCoroutine("OldFox3");
+                    else
+                        StartCoroutine("OldFox5");
                     break;
 
                 case "oldFox5":
@@ -206,6 +243,22 @@ public class EventManager : MonoBehaviour
 
                 case "oldFox10":
                     StartCoroutine("OldFox11");
+                    break;
+
+                case "rabbit2":
+                    StartCoroutine("rabbit3");
+                    break;
+
+                case "rabbit5":
+                    StartCoroutine("rabbit6");
+                    break;
+
+                case "rabbit7":
+                    StartCoroutine("rabbit8");
+                    break;
+
+                case "rabbit9":
+                    StartCoroutine("QuitTalk");
                     break;
 
                 default:
@@ -457,6 +510,135 @@ public class EventManager : MonoBehaviour
         staminaBar.SetActive(true);
     }
 
+    public IEnumerator Rabbit1()
+    {
+        hpBar.SetActive(false);
+        staminaBar.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+
+        currentConv = "rabbit1";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = rabbitLines1;
+        rabbitFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Rabbit2()
+    {
+        rabbitFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "rabbit2";
+        choiceText1.text = rabbitLines2[0];
+        choiceText2.text = rabbitLines2[1];
+        choice1.SetActive(true);
+        choice2.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Rabbit3()
+    {
+        currentConv = "rabbit3";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = rabbitLines3;
+        rabbitFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Rabbit4()
+    {
+        rabbitFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "rabbit4";
+        choiceText1.text = rabbitLines4[0];
+        choice1.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Rabbit5()
+    {
+        currentConv = "rabbit5";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = rabbitLines5;
+        rabbitFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Rabbit6()
+    {
+        currentConv = "rabbit6";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = rabbitLines6;
+        rabbitFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Rabbit7()
+    {
+        rabbitFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "rabbit7";
+        choiceText1.text = rabbitLines7[0];
+        choice1.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Rabbit8()
+    {
+        currentConv = "rabbit8";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = rabbitLines8;
+        rabbitFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Rabbit9()
+    {
+        rabbitFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "rabbit9";
+        choiceText1.text = rabbitLines9[0];
+        choiceText2.text = rabbitLines9[1];
+        choice1.SetActive(true);
+        choice2.SetActive(true);
+        Cursor.visible = true;
+    }
+
     public IEnumerator EnemyPeek()
     {
         hpBar.SetActive(false);
@@ -653,5 +835,12 @@ public class EventManager : MonoBehaviour
     {
         choiceValue = 2;
         choiceMade = true;
+    }
+
+    IEnumerator HideFade(float fadeTime)
+    {
+        yield return new WaitForSeconds(fadeTime);
+
+        fade.SetActive(false);
     }
 }
