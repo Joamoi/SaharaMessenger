@@ -16,6 +16,7 @@ public class Rabbit : MonoBehaviour
                 canTalk = false;
                 PlayerManager.playerInstance.talkText.SetActive(false);
                 EventManager.eventInstance.StartCoroutine("Rabbit1");
+                gameObject.GetComponent<Rabbit>().enabled = false;
             }
         }
     }

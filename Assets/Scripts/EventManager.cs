@@ -192,23 +192,23 @@ public class EventManager : MonoBehaviour
                             break;
 
                         case "rabbit1":
-                            StartCoroutine("rabbit2");
+                            StartCoroutine("Rabbit2");
                             break;
 
                         case "rabbit3":
-                            StartCoroutine("rabbit4");
+                            StartCoroutine("Rabbit4");
                             break;
 
-                        case "rabbit4":
-                            StartCoroutine("rabbit6");
+                        case "rabbit5":
+                            StartCoroutine("Rabbit6");
                             break;
 
                         case "rabbit6":
-                            StartCoroutine("rabbit7");
+                            StartCoroutine("Rabbit7");
                             break;
 
                         case "rabbit8":
-                            StartCoroutine("rabbit9");
+                            StartCoroutine("Rabbit9");
                             break;
 
                         case "chase":
@@ -238,10 +238,7 @@ public class EventManager : MonoBehaviour
             switch (currentConv)
             {
                 case "oldFox2":
-                    if (choiceValue == 1)
-                        StartCoroutine("OldFox3");
-                    else
-                        StartCoroutine("OldFox5");
+                    StartCoroutine("OldFox3");
                     break;
 
                 case "oldFox5":
@@ -257,15 +254,18 @@ public class EventManager : MonoBehaviour
                     break;
 
                 case "rabbit2":
-                    StartCoroutine("rabbit3");
+                    if (choiceValue == 1)
+                        StartCoroutine("Rabbit3");
+                    else
+                        StartCoroutine("Rabbit5");
                     break;
 
-                case "rabbit5":
-                    StartCoroutine("rabbit6");
+                case "rabbit4":
+                    StartCoroutine("Rabbit6");
                     break;
 
                 case "rabbit7":
-                    StartCoroutine("rabbit8");
+                    StartCoroutine("Rabbit8");
                     break;
 
                 case "rabbit9":
@@ -299,7 +299,7 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = -1f;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
 
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
@@ -325,9 +325,9 @@ public class EventManager : MonoBehaviour
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = -170f;
+        camTargetX = -160f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = 0f;
+        camTargetY = 0.3f;
         lerpFloat = 0f;
         camTurning = true;
 
@@ -503,7 +503,7 @@ public class EventManager : MonoBehaviour
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = -285f;
+        camTargetX = -275f;
         camStartY = cineCam.m_YAxis.Value;
         camTargetY = 0.3f;
         lerpFloat = 0f;
