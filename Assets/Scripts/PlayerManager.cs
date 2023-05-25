@@ -14,6 +14,10 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public bool canMove;
     [HideInInspector]
+    public bool canRun;
+    [HideInInspector]
+    public bool inDust;
+    [HideInInspector]
     public bool noDrain = false;
     private float speed;
     public float runSpeed;
@@ -53,14 +57,16 @@ public class PlayerManager : MonoBehaviour
     private float idleTime;
     private float idleSwitchTime;
 
-    private float hp = 100f;
+    [HideInInspector]
+    public float hp = 100f;
     public GameObject hpMask;
     private float hp0PosX;
     private float hp100PosX;
     private float hpMax;
     public float damagePerHit = 10f;
 
-    private float stamina = 100f;
+    [HideInInspector]
+    public float stamina = 100f;
     public GameObject staminaMask;
     private float stamina0PosX;
     private float stamina100PosX;
@@ -180,7 +186,7 @@ public class PlayerManager : MonoBehaviour
             }
 
             // sprint
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && canRun)
             {
                 speed = runSpeed;
             }
@@ -203,7 +209,7 @@ public class PlayerManager : MonoBehaviour
             idleTime = 0f;
             animator.SetBool("Walking", true);
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && canRun)
             {
                 animator.SetBool("Running", true);
             }
@@ -280,9 +286,26 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        if (stamina < 0)
+        if (stamina <= 0)
         {
             stamina = 0;
+            canRun = false;
+        }
+
+        else if (inDust)
+        {
+            canRun = false;
+        }
+
+        else
+        {
+            canRun = true;
+        }
+
+        if (hp <= 0)
+        {
+            hp = 0;
+            StartCoroutine("Death");
         }
 
         // update hp and stamina bars
@@ -291,16 +314,6 @@ public class PlayerManager : MonoBehaviour
 
         float newStaminaPosX = Mathf.Lerp(stamina100PosX, stamina0PosX, (staminaMax - stamina) / staminaMax);
         staminaMask.transform.position = new Vector3(newStaminaPosX, staminaMask.transform.position.y, staminaMask.transform.position.z);
-    }
-
-    public void TakeDamage()
-    {
-        hp -= damagePerHit;
-
-        if (hp <= 0)
-        {
-            hp = 0;
-        }
     }
 
     public void Eat()
@@ -388,9 +401,16 @@ public class PlayerManager : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
+        hp = 100f;
+        stamina = 100f;
+
         //fade
-        //respawn at checkpoint
+
+        transform.position = EventManager.eventInstance.respawnPos;
+
         // reset anything necessary: hide jackals, fix dropfloor, heal, ...
+
+        canMove = true;
     }
 
     IEnumerator InAir()

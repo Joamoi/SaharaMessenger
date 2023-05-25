@@ -84,6 +84,14 @@ public class EventManager : MonoBehaviour
     private Color32 targetColor;
     private bool colorChanging = false;
 
+    public GameObject respawn1;
+    public GameObject respawn2;
+    public GameObject cpCollider2;
+    [HideInInspector]
+    public int cpValue;
+    [HideInInspector]
+    public Vector3 respawnPos;
+
     void Awake()
     {
         eventInstance = this;
@@ -92,6 +100,9 @@ public class EventManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cpValue = 1;
+        respawnPos = respawn1.transform.position;
+
         camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
         camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
 
@@ -842,5 +853,23 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(fadeTime);
 
         fade.SetActive(false);
+    }
+
+    public void NewCheckpoint()
+    {
+        switch (cpValue)
+        {
+            case 1:
+                respawnPos = respawn1.transform.position;
+                break;
+
+            case 2:
+                respawnPos = respawn2.transform.position;
+                break;
+
+            default:
+                respawnPos = respawn1.transform.position;
+                break;
+        }
     }
 }
