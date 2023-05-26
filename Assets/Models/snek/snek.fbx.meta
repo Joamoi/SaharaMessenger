@@ -33,8 +33,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature|snek_alaidle
-      takeName: Armature|snek_alaidle
+      name: "Armature|snek_yl\xE4idle (1)"
+      takeName: "Armature|snek_yl\xE4idle"
       internalID: -2756690344307395085
       firstFrame: 0
       lastFrame: 119

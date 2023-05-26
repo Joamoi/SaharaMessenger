@@ -12,6 +12,7 @@ public class EventManager : MonoBehaviour
     public GameObject oldFox;
     public GameObject scarf;
     public GameObject oldFoxScarf;
+    public GameObject snake;
     public GameObject peekJackal;
     public GameObject chaseJackal1;
     public GameObject chaseJackal2;
@@ -681,7 +682,7 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        // snake comes up
+        //Instantiate(snake, )
 
         yield return new WaitForSeconds(2f);
 
