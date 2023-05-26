@@ -75,10 +75,28 @@ public class EventManager : MonoBehaviour
     public string[] rabbitLines8;
     public string[] rabbitLines9;
 
+    public string[] snakeLines1;
+    public string[] snakeLines2;
+    public string[] snakeLines3;
+    public string[] snakeLines4;
+    public string[] snakeLines5;
+    public string[] snakeLines6;
+    public string[] snakeLines7;
+    public string[] snakeLines8;
+    public string[] snakeLines9;
+    public string[] snakeLines10;
+    public string[] snakeLines11;
+    public string[] snakeLines12;
+    public string[] snakeLines13;
+    public string[] snakeLines14;
+    public string[] snakeLines15;
+
     public GameObject oldFoxFace;
     public GameObject oldFoxSmilingFace;
     public GameObject rabbitFace;
     public GameObject rabbitSmilingFace;
+    public GameObject snakeFace;
+    public GameObject snakeGrinFace;
 
     private Color32 originalAmbientColor;
     private Color32 targetColor;
@@ -648,6 +666,35 @@ public class EventManager : MonoBehaviour
         choice1.SetActive(true);
         choice2.SetActive(true);
         Cursor.visible = true;
+    }
+
+    IEnumerator Snake1()
+    {
+        hpBar.SetActive(false);
+        staminaBar.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+        cineCam.m_XAxis.Value = 255f;
+        cineCam.m_YAxis.Value = 0.3f;
+
+        yield return new WaitForSeconds(2f);
+
+        // snake comes up
+
+        yield return new WaitForSeconds(2f);
+
+        currentConv = "snake1";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = oldFoxLines1;
+        oldFoxFace.SetActive(true);
+
+        StartCoroutine("NextLine");
     }
 
     public IEnumerator EnemyPeek()
