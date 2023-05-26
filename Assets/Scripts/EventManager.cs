@@ -13,6 +13,7 @@ public class EventManager : MonoBehaviour
     public GameObject scarf;
     public GameObject oldFoxScarf;
     public GameObject snake;
+    public Animator snakeAnimator;
     public GameObject peekJackal;
     public GameObject chaseJackal1;
     public GameObject chaseJackal2;
@@ -35,8 +36,10 @@ public class EventManager : MonoBehaviour
     public GameObject textArrow;
     public GameObject choice1;
     public GameObject choice2;
+    public GameObject choice3;
     public TextMeshProUGUI choiceText1;
     public TextMeshProUGUI choiceText2;
+    public TextMeshProUGUI choiceText3;
 
     private float camSpeedX;
     private float camSpeedY;
@@ -89,15 +92,12 @@ public class EventManager : MonoBehaviour
     public string[] snakeLines11;
     public string[] snakeLines12;
     public string[] snakeLines13;
-    public string[] snakeLines14;
-    public string[] snakeLines15;
 
     public GameObject oldFoxFace;
     public GameObject oldFoxSmilingFace;
     public GameObject rabbitFace;
     public GameObject rabbitSmilingFace;
     public GameObject snakeFace;
-    public GameObject snakeGrinFace;
 
     private Color32 originalAmbientColor;
     private Color32 targetColor;
@@ -230,6 +230,38 @@ public class EventManager : MonoBehaviour
                             StartCoroutine("Rabbit9");
                             break;
 
+                        case "snake1":
+                            StartCoroutine("Snake2");
+                            break;
+
+                        case "snake3":
+                            StartCoroutine("Snake4");
+                            break;
+
+                        case "snake5":
+                            StartCoroutine("Snake6");
+                            break;
+
+                        case "snake6":
+                            StartCoroutine("Snake7");
+                            break;
+
+                        case "snake8":
+                            StartCoroutine("Snake9");
+                            break;
+
+                        case "snake10":
+                            StartCoroutine("Snake12");
+                            break;
+
+                        case "snake11":
+                            StartCoroutine("Snake12");
+                            break;
+
+                        case "snake12":
+                            StartCoroutine("Snake13");
+                            break;
+
                         case "chase":
                             StartCoroutine("Chase");
                             break;
@@ -252,6 +284,7 @@ public class EventManager : MonoBehaviour
             choiceMade = false;
             choice1.SetActive(false);
             choice2.SetActive(false);
+            choice3.SetActive(false);
             Cursor.visible = false;
 
             switch (currentConv)
@@ -289,6 +322,29 @@ public class EventManager : MonoBehaviour
 
                 case "rabbit9":
                     StartCoroutine("QuitTalk");
+                    break;
+
+                case "snake2":
+                    StartCoroutine("Snake3");
+                    break;
+
+                case "snake4":
+                    StartCoroutine("Snake5");
+                    break;
+
+                case "snake7":
+                    StartCoroutine("Snake8");
+                    break;
+
+                case "snake9":
+                    if (choiceValue == 2)
+                        StartCoroutine("Snake11");
+                    else
+                        StartCoroutine("Snake10");
+                    break;
+
+                case "snake13":
+                    StartCoroutine("Snake14");
                     break;
 
                 default:
@@ -548,6 +604,8 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
 
         currentConv = "rabbit1";
         npcTextField.SetActive(true);
@@ -677,12 +735,32 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
-        cineCam.m_XAxis.Value = 255f;
-        cineCam.m_YAxis.Value = 0.3f;
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
-        //Instantiate(snake, )
+        camTurnTime = 1f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = -10f;
+        camStartY = cineCam.m_YAxis.Value;
+        camTargetY = 0f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(1.5f);
+
+        snake.transform.position = fox.transform.position + new Vector3(0.2f, -0.15f, 1f);
+
+        Vector3 direction = (snake.transform.position - fox.transform.position).normalized;
+        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        snake.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+        direction = (snake.transform.position - fox.transform.position).normalized;
+        targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        fox.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+        snake.SetActive(true);
 
         yield return new WaitForSeconds(2f);
 
@@ -692,10 +770,222 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         lineIndex = 0;
-        speechLines = oldFoxLines1;
-        oldFoxFace.SetActive(true);
+        speechLines = snakeLines1;
+        snakeFace.SetActive(true);
 
         StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake2()
+    {
+        snakeFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "snake2";
+        choiceText1.text = snakeLines2[0];
+        choice1.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Snake3()
+    {
+        currentConv = "snake3";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = snakeLines3;
+        snakeFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake4()
+    {
+        snakeFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "snake4";
+        choiceText1.text = snakeLines4[0];
+        choice1.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Snake5()
+    {
+        currentConv = "snake5";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = snakeLines5;
+        snakeFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake6()
+    {
+        npcTextField.SetActive(false);
+        snakeFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        snake.GetComponent<Snake>().Walk();
+
+        snakeAnimator.SetTrigger("Closer");
+
+        yield return new WaitForSeconds(0.5f);
+
+        snake.GetComponent<Snake>().Stop();
+
+        yield return new WaitForSeconds(1f);
+
+        currentConv = "snake6";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = snakeLines6;
+        snakeFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake7()
+    {
+        snakeFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "snake7";
+        choiceText1.text = snakeLines7[0];
+        choice1.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Snake8()
+    {
+        currentConv = "snake8";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = snakeLines8;
+        snakeFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake9()
+    {
+        snakeFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "snake9";
+        choiceText1.text = snakeLines9[0];
+        choiceText2.text = snakeLines9[1];
+        choiceText3.text = snakeLines9[2];
+        choice1.SetActive(true);
+        choice2.SetActive(true);
+        choice3.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Snake10()
+    {
+        currentConv = "snake10";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = snakeLines10;
+        snakeFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake11()
+    {
+        currentConv = "snake11";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = snakeLines11;
+        snakeFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake12()
+    {
+        currentConv = "snake12";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = snakeLines12;
+        snakeFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Snake13()
+    {
+        snakeFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "snake13";
+        choiceText1.text = snakeLines13[0];
+        choiceText2.text = snakeLines13[1];
+        choice1.SetActive(true);
+        choice2.SetActive(true);
+        Cursor.visible = true;
+    }
+
+    IEnumerator Snake14()
+    {
+        npcTextField.SetActive(false);
+        snakeFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        snakeAnimator.SetTrigger("Down");
+
+        yield return new WaitForSeconds(1.5f);
+
+        camTurnTime = 1f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = 35f;
+        camStartY = cineCam.m_YAxis.Value;
+        camTargetY = 0.2f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        snake.SetActive(false);
+
+        yield return new WaitForSeconds(1.5f);
+
+        PlayerManager.playerInstance.canMove = true;
+        PlayerManager.playerInstance.noDrain = false;
+        cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
+        cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
+        hpBar.SetActive(true);
+        staminaBar.SetActive(true);
     }
 
     public IEnumerator EnemyPeek()

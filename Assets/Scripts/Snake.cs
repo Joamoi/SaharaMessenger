@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private bool walking = false;
+    public float speed;
+
+    // Update is called once per frame
+    void Update()
     {
-        if (other.tag == "Player")
+        if (walking)
         {
-            EventManager.eventInstance.StartCoroutine("Snake1");
+            gameObject.transform.position -= transform.forward * speed * Time.deltaTime;
         }
+    }
+
+    public void Walk()
+    {
+        walking = true;
+    }
+
+    public void Stop()
+    {
+        walking = false;
     }
 }
