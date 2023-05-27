@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -72,13 +73,20 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         PlayerManager.playerInstance.gameIsPaused = false;
         pauseMenu.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
 
     public void NewGame()
     {
+        Time.timeScale = 1f;
+        PlayerManager.playerInstance.gameIsPaused = false;
+        pauseMenu.SetActive(false);
 
+        PlayerPrefs.SetInt("cpValue", 0);
+
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 
     public void AreYouSure()

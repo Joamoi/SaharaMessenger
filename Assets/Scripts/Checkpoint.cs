@@ -8,7 +8,6 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            EventManager.eventInstance.cpValue++;
             EventManager.eventInstance.NewCheckpoint();
             gameObject.SetActive(false);
         }

@@ -26,7 +26,7 @@ public class EventManager : MonoBehaviour
     public bool playStartCutscene;
 
     public GameObject fade;
-    public GameObject fadeAnimator;
+    public Animator fadeAnimator;
 
     public GameObject hpBar;
     public GameObject staminaBar;
@@ -105,7 +105,12 @@ public class EventManager : MonoBehaviour
 
     public GameObject respawn1;
     public GameObject respawn2;
+    public GameObject respawn3;
+    public GameObject respawn4;
+    public GameObject cpCollider1;
     public GameObject cpCollider2;
+    public GameObject cpCollider3;
+    public GameObject cpCollider4;
     [HideInInspector]
     public int cpValue;
     [HideInInspector]
@@ -114,29 +119,82 @@ public class EventManager : MonoBehaviour
     void Awake()
     {
         eventInstance = this;
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+
+        camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
+        camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
+
+        if (!(PlayerPrefs.GetInt("cpValue") == 0))
+        {
+            cpValue = PlayerPrefs.GetInt("cpValue");
+
+            switch (cpValue)
+            {
+                case 1:
+                    respawnPos = respawn1.transform.position;
+                    cpCollider1.SetActive(false);
+                    break;
+
+                case 2:
+                    respawnPos = respawn2.transform.position;
+                    cpCollider1.SetActive(false);
+                    cpCollider2.SetActive(false);
+                    break;
+
+                case 3:
+                    respawnPos = respawn3.transform.position;
+                    cpCollider1.SetActive(false);
+                    cpCollider2.SetActive(false);
+                    cpCollider3.SetActive(false);
+                    break;
+
+                case 4:
+                    respawnPos = respawn4.transform.position;
+                    cpCollider1.SetActive(false);
+                    cpCollider2.SetActive(false);
+                    cpCollider3.SetActive(false);
+                    cpCollider4.SetActive(false);
+                    break;
+
+                default:
+                    respawnPos = respawn1.transform.position;
+                    cpCollider1.SetActive(false);
+                    break;
+            }
+        }
+
+        else
+        {
+            cpValue = 0;
+
+            if (playStartCutscene)
+            {
+                StartCoroutine("OldFox1");
+            }
+
+            else
+            {
+                scarf.SetActive(true);
+            }
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        cpValue = 1;
-        respawnPos = respawn1.transform.position;
+        Debug.Log("cpValue: " + cpValue);
 
-        camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
-        camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
+        if (cpValue != 0)
+        {
+            fox.GetComponent<CharacterController>().enabled = false;
+            fox.transform.position = respawnPos;
+            fox.GetComponent<CharacterController>().enabled = true;
+        }
 
         fade.SetActive(true);
-        StartCoroutine("HideFade", 3f);
-
-        if (playStartCutscene)
-        {
-            StartCoroutine("OldFox1");
-        }
-
-        else
-        {
-            scarf.SetActive(true);
-        }
+        //StartCoroutine("HideFade", 3f);
 
         originalAmbientColor = RenderSettings.ambientLight;
     }
@@ -171,7 +229,7 @@ public class EventManager : MonoBehaviour
 
         if (lineShown)
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Mouse0))
             {
                 lineIndex++;
                 lineShown = false;
@@ -285,7 +343,6 @@ public class EventManager : MonoBehaviour
             choice1.SetActive(false);
             choice2.SetActive(false);
             choice3.SetActive(false);
-            Cursor.visible = false;
 
             switch (currentConv)
             {
@@ -383,6 +440,7 @@ public class EventManager : MonoBehaviour
 
         currentConv = "oldFox1";
         npcTextField.SetActive(true);
+        Cursor.visible = true;
 
         yield return new WaitForSeconds(0.2f);
 
@@ -433,7 +491,6 @@ public class EventManager : MonoBehaviour
         choiceText2.text = oldFoxLines2[1];
         choice1.SetActive(true);
         choice2.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator OldFox3()
@@ -484,7 +541,6 @@ public class EventManager : MonoBehaviour
         choiceText2.text = oldFoxLines5[1];
         choice1.SetActive(true);
         choice2.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator OldFox6()
@@ -510,7 +566,6 @@ public class EventManager : MonoBehaviour
         currentConv = "oldFox7";
         choiceText1.text = oldFoxLines7[0];
         choice1.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator OldFox8()
@@ -569,12 +624,12 @@ public class EventManager : MonoBehaviour
         currentConv = "oldFox10";
         choiceText1.text = oldFoxLines10[0];
         choice1.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator OldFox11()
     {
         npcTextField.SetActive(false);
+        Cursor.visible = false;
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
@@ -609,6 +664,7 @@ public class EventManager : MonoBehaviour
 
         currentConv = "rabbit1";
         npcTextField.SetActive(true);
+        Cursor.visible = true;
 
         yield return new WaitForSeconds(0.2f);
 
@@ -630,7 +686,6 @@ public class EventManager : MonoBehaviour
         choiceText2.text = rabbitLines2[1];
         choice1.SetActive(true);
         choice2.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Rabbit3()
@@ -656,7 +711,6 @@ public class EventManager : MonoBehaviour
         currentConv = "rabbit4";
         choiceText1.text = rabbitLines4[0];
         choice1.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Rabbit5()
@@ -696,7 +750,6 @@ public class EventManager : MonoBehaviour
         currentConv = "rabbit7";
         choiceText1.text = rabbitLines7[0];
         choice1.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Rabbit8()
@@ -724,7 +777,6 @@ public class EventManager : MonoBehaviour
         choiceText2.text = rabbitLines9[1];
         choice1.SetActive(true);
         choice2.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Snake1()
@@ -744,7 +796,7 @@ public class EventManager : MonoBehaviour
         camStartX = cineCam.m_XAxis.Value;
         camTargetX = -10f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = 0f;
+        camTargetY = 0.3f;
         lerpFloat = 0f;
         camTurning = true;
 
@@ -762,10 +814,15 @@ public class EventManager : MonoBehaviour
 
         snake.SetActive(true);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+
+        snakeAnimator.SetTrigger("Tongue");
+
+        yield return new WaitForSeconds(1f);
 
         currentConv = "snake1";
         npcTextField.SetActive(true);
+        Cursor.visible = true;
 
         yield return new WaitForSeconds(0.2f);
 
@@ -785,7 +842,6 @@ public class EventManager : MonoBehaviour
         currentConv = "snake2";
         choiceText1.text = snakeLines2[0];
         choice1.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Snake3()
@@ -811,7 +867,6 @@ public class EventManager : MonoBehaviour
         currentConv = "snake4";
         choiceText1.text = snakeLines4[0];
         choice1.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Snake5()
@@ -843,6 +898,8 @@ public class EventManager : MonoBehaviour
 
         snake.GetComponent<Snake>().Stop();
 
+        snakeAnimator.SetTrigger("Tongue");
+
         yield return new WaitForSeconds(1f);
 
         currentConv = "snake6";
@@ -866,7 +923,6 @@ public class EventManager : MonoBehaviour
         currentConv = "snake7";
         choiceText1.text = snakeLines7[0];
         choice1.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Snake8()
@@ -896,7 +952,6 @@ public class EventManager : MonoBehaviour
         choice1.SetActive(true);
         choice2.SetActive(true);
         choice3.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Snake10()
@@ -952,13 +1007,15 @@ public class EventManager : MonoBehaviour
         choiceText2.text = snakeLines13[1];
         choice1.SetActive(true);
         choice2.SetActive(true);
-        Cursor.visible = true;
     }
 
     IEnumerator Snake14()
     {
         npcTextField.SetActive(false);
+        Cursor.visible = false;
         snakeFace.SetActive(false);
+
+        snakeAnimator.SetTrigger("Tongue");
 
         yield return new WaitForSeconds(0.5f);
 
@@ -968,7 +1025,7 @@ public class EventManager : MonoBehaviour
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 35f;
+        camTargetX = 45f;
         camStartY = cineCam.m_YAxis.Value;
         camTargetY = 0.2f;
         lerpFloat = 0f;
@@ -1077,6 +1134,7 @@ public class EventManager : MonoBehaviour
         currentConv = "chase";
         npcText.text = "";
         npcTextField.SetActive(true);
+        Cursor.visible = true;
 
         yield return new WaitForSeconds(0.2f);
 
@@ -1089,6 +1147,7 @@ public class EventManager : MonoBehaviour
     public IEnumerator Chase()
     {
         npcTextField.SetActive(false);
+        Cursor.visible = false;
 
         chaseJackal1.GetComponent<Jackal>().StartCoroutine("StartChase");
         chaseJackal2.GetComponent<Jackal>().StartCoroutine("StartChase");
@@ -1156,6 +1215,7 @@ public class EventManager : MonoBehaviour
     IEnumerator QuitTalk()
     {
         npcTextField.SetActive(false);
+        Cursor.visible = false;
 
         yield return new WaitForSeconds(0.5f);
 
@@ -1195,6 +1255,9 @@ public class EventManager : MonoBehaviour
 
     public void NewCheckpoint()
     {
+        cpValue++;
+        PlayerPrefs.SetInt("cpValue", cpValue);
+
         switch (cpValue)
         {
             case 1:
@@ -1203,6 +1266,14 @@ public class EventManager : MonoBehaviour
 
             case 2:
                 respawnPos = respawn2.transform.position;
+                break;
+
+            case 3:
+                respawnPos = respawn3.transform.position;
+                break;
+
+            case 4:
+                respawnPos = respawn4.transform.position;
                 break;
 
             default:

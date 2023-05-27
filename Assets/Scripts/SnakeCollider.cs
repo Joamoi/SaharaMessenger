@@ -9,6 +9,7 @@ public class SnakeCollider : MonoBehaviour
         if (other.tag == "Player")
         {
             EventManager.eventInstance.StartCoroutine("Snake1");
+            gameObject.SetActive(false);
         }
     }
 }

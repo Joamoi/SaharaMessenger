@@ -11,7 +11,7 @@ public class Rabbit : MonoBehaviour
     {
         if (canTalk)
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 canTalk = false;
                 PlayerManager.playerInstance.talkText.SetActive(false);

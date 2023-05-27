@@ -18,6 +18,8 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public bool inDust;
     [HideInInspector]
+    public bool dead = false;
+    [HideInInspector]
     public bool noDrain = false;
     private float speed;
     public float runSpeed;
@@ -102,8 +104,6 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.visible = false;
-
         speed = walkSpeed;
 
         hp100PosX = hpMask.transform.position.x;
@@ -302,8 +302,9 @@ public class PlayerManager : MonoBehaviour
             canRun = true;
         }
 
-        if (hp <= 0)
+        if (hp <= 0 && !dead)
         {
+            dead = true;
             hp = 0;
             StartCoroutine("Death");
         }
@@ -399,17 +400,30 @@ public class PlayerManager : MonoBehaviour
         animator.SetBool("Walking", false);
         animator.SetTrigger("Death");
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
+
+        EventManager.eventInstance.fadeAnimator.SetTrigger("FadeOut");
+
+        yield return new WaitForSeconds(2f);
 
         hp = 100f;
         stamina = 100f;
 
-        //fade
+        animator.SetTrigger("Respawn");
 
+        yield return new WaitForSeconds(1f);
+
+        gameObject.GetComponent<CharacterController>().enabled = false;
         transform.position = EventManager.eventInstance.respawnPos;
+        gameObject.GetComponent<CharacterController>().enabled = true;
 
         // reset anything necessary: hide jackals, fix dropfloor, heal, ...
 
+        EventManager.eventInstance.fadeAnimator.SetTrigger("FadeIn");
+
+        yield return new WaitForSeconds(2f);
+
+        dead = false;
         canMove = true;
     }
 
