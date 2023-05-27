@@ -24,6 +24,7 @@ public class EventManager : MonoBehaviour
     public Transform startPos;
     public CinemachineFreeLook cineCam;
     public bool playStartCutscene;
+    public bool startFromCheckPoint;
 
     public GameObject fade;
     public Animator fadeAnimator;
@@ -99,9 +100,10 @@ public class EventManager : MonoBehaviour
     public GameObject rabbitSmilingFace;
     public GameObject snakeFace;
 
-    private Color32 originalAmbientColor;
-    private Color32 targetColor;
-    private bool colorChanging = false;
+    [HideInInspector]
+    public Color32 originalAmbientColor;
+    [HideInInspector]
+    public int lightOrDark;
 
     public GameObject respawn1;
     public GameObject respawn2;
@@ -126,7 +128,7 @@ public class EventManager : MonoBehaviour
         camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
         camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
 
-        if (!(PlayerPrefs.GetInt("cpValue") == 0))
+        if (!(PlayerPrefs.GetInt("cpValue") == 0) && startFromCheckPoint)
         {
             cpValue = PlayerPrefs.GetInt("cpValue");
 
@@ -210,7 +212,7 @@ public class EventManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            targetColor = new Color32(50, 50, 50, 255);
+            RenderSettings.ambientLight = new Color32(50, 50, 50, 255);
         }
 
         if (camTurning)

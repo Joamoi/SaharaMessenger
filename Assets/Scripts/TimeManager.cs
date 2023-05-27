@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class TimeManager : MonoBehaviour
 {
     public static float timeDrainMultiplier;
-    public GameObject light;
+    public GameObject dirLight;
     public Gradient gradient;
 
     public float dayMultiplier = 1f;
@@ -25,13 +26,21 @@ public class TimeManager : MonoBehaviour
     private float transitionTime = 0f;
     private bool colorChanging = false;
 
+    public AudioSource daySound;
+    public AudioSource nightSound;
+    public float originalDayVolume;
+    public float originalNightVolume;
+
     //public GameObject skybox;
     private float blend;
 
     // Start is called before the first frame update
     void Start()
     {
-        rotationY = light.transform.localEulerAngles.y;
+        originalDayVolume = daySound.volume;
+        originalNightVolume = nightSound.volume;
+
+        rotationY = dirLight.transform.localEulerAngles.y;
         StartCoroutine("Day");
     }
 
@@ -43,11 +52,11 @@ public class TimeManager : MonoBehaviour
             transitionTime += Time.deltaTime;
 
             rotationX = Mathf.Lerp(nightLightAngle, dayLightAngle, (transitionLength - transitionTime) / transitionLength);
-            light.transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
+            dirLight.transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
 
             if (colorChanging)
             {
-                light.GetComponent<Light>().color = gradient.Evaluate(1f - (transitionLength - transitionTime) / (transitionLength / 2f));
+                dirLight.GetComponent<Light>().color = gradient.Evaluate(1f - (transitionLength - transitionTime) / (transitionLength / 2f));
             }
 
             blend = ((1f - (transitionLength - transitionTime)) / transitionLength) + 1f;
@@ -59,11 +68,11 @@ public class TimeManager : MonoBehaviour
             transitionTime += Time.deltaTime;
 
             rotationX = Mathf.Lerp(dayLightAngle, nightLightAngle, (transitionLength - transitionTime) / transitionLength);
-            light.transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
+            dirLight.transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
 
             if (colorChanging)
             {
-                light.GetComponent<Light>().color = gradient.Evaluate((transitionLength / 2f - transitionTime) / (transitionLength / 2f));
+                dirLight.GetComponent<Light>().color = gradient.Evaluate((transitionLength / 2f - transitionTime) / (transitionLength / 2f));
             }
 
             blend = (transitionLength - transitionTime) / (transitionLength);
@@ -88,6 +97,8 @@ public class TimeManager : MonoBehaviour
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = true;
         timeDrainMultiplier = eveningMultiplier;
+        daySound.Stop();
+        nightSound.Play();
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = false;
         dayToNight = false;
@@ -112,6 +123,8 @@ public class TimeManager : MonoBehaviour
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = false;
         timeDrainMultiplier = afternoonMultiplier;
+        nightSound.Stop();
+        daySound.Play();
         yield return new WaitForSeconds(transitionLength / 2f);
         nightToDay = false;
         StartCoroutine("Day");
