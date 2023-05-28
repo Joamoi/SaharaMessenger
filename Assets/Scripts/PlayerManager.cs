@@ -242,6 +242,8 @@ public class PlayerManager : MonoBehaviour
 
         // stamina drain
 
+        float timeDrainMultiplier = TimeManager.timeInstance.timeDrainMultiplier;
+
         if (!noDrain)
         {
             if (direction.magnitude >= 0.1f)
@@ -250,24 +252,24 @@ public class PlayerManager : MonoBehaviour
                 {
                     if (stamina > 0)
                     {
-                        stamina -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                        stamina -= runDrain * Time.deltaTime * timeDrainMultiplier;
                     }
 
                     else
                     {
-                        hp -= runDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                        hp -= runDrain * Time.deltaTime * timeDrainMultiplier;
                     }
                 }
                 else
                 {
                     if (stamina > 0)
                     {
-                        stamina -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                        stamina -= walkDrain * Time.deltaTime * timeDrainMultiplier;
                     }
 
                     else
                     {
-                        hp -= walkDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                        hp -= walkDrain * Time.deltaTime * timeDrainMultiplier;
                     }
                 }
             }
@@ -276,12 +278,12 @@ public class PlayerManager : MonoBehaviour
             {
                 if (stamina > 0)
                 {
-                    stamina -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    stamina -= idleDrain * Time.deltaTime * timeDrainMultiplier;
                 }
 
                 else
                 {
-                    hp -= idleDrain * Time.deltaTime * TimeManager.timeDrainMultiplier;
+                    hp -= idleDrain * Time.deltaTime * timeDrainMultiplier;
                 }
             }
         }
@@ -416,6 +418,16 @@ public class PlayerManager : MonoBehaviour
         gameObject.GetComponent<CharacterController>().enabled = false;
         transform.position = EventManager.eventInstance.respawnPos;
         gameObject.GetComponent<CharacterController>().enabled = true;
+
+        if (EventManager.eventInstance.cpValue == 3)
+        {
+            TimeManager.timeInstance.dayOnly = true;
+        }
+
+        else
+        {
+            TimeManager.timeInstance.dayOnly = false;
+        }
 
         // reset anything necessary: hide jackals, fix dropfloor, heal, ...
 

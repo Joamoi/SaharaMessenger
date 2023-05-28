@@ -5,7 +5,10 @@ using UnityEngine.Audio;
 
 public class TimeManager : MonoBehaviour
 {
-    public static float timeDrainMultiplier;
+    public static TimeManager timeInstance;
+
+    [HideInInspector]
+    public float timeDrainMultiplier;
     public GameObject dirLight;
     public Gradient gradient;
 
@@ -25,6 +28,8 @@ public class TimeManager : MonoBehaviour
     private bool nightToDay = false;
     private float transitionTime = 0f;
     private bool colorChanging = false;
+    [HideInInspector]
+    public bool dayOnly = false;
 
     public AudioSource daySound;
     public AudioSource nightSound;
@@ -37,6 +42,11 @@ public class TimeManager : MonoBehaviour
 
     //public GameObject skybox;
     private float blend;
+
+    void Awake()
+    {
+        timeInstance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +76,7 @@ public class TimeManager : MonoBehaviour
             blend = ((1f - (transitionLength - transitionTime)) / transitionLength) + 1f;
             //skybox.GetComponent<SkyboxBlender>().blend = blend;
 
-            float t = (transitionLength - transitionTime) / transitionLength;
+            float t = 1f - (transitionLength - transitionTime) / (transitionLength / 2f);
 
             byte r = (byte)Mathf.Lerp(dayStormColor.r, nightStormColor.r, t);
             byte g = (byte)Mathf.Lerp(dayStormColor.g, nightStormColor.g, t);
@@ -74,7 +84,9 @@ public class TimeManager : MonoBehaviour
 
             for (int i = 0; i < sandstorms.Length; i++)
             {
-                //sandstorms[i].main.startColor = new Color32(r,g,b,255);
+                ParticleSystem.MainModule main = sandstorms[i].main;
+                Color color = new Color32(r, g, b, 255);
+                main.startColor = color;
             }
         }
 
@@ -92,6 +104,19 @@ public class TimeManager : MonoBehaviour
 
             blend = (transitionLength - transitionTime) / (transitionLength);
             //skybox.GetComponent<SkyboxBlender>().blend = blend;
+
+            float t = (transitionLength / 2f - transitionTime) / (transitionLength / 2f);
+
+            byte r = (byte)Mathf.Lerp(dayStormColor.r, nightStormColor.r, t);
+            byte g = (byte)Mathf.Lerp(dayStormColor.g, nightStormColor.g, t);
+            byte b = (byte)Mathf.Lerp(dayStormColor.b, nightStormColor.b, t);
+
+            for (int i = 0; i < sandstorms.Length; i++)
+            {
+                ParticleSystem.MainModule main = sandstorms[i].main;
+                Color color = new Color32(r, g, b, 255);
+                main.startColor = color;
+            }
         }
     }
 
@@ -100,7 +125,11 @@ public class TimeManager : MonoBehaviour
         timeDrainMultiplier = dayMultiplier;
         Debug.Log("Day Started");
         yield return new WaitForSeconds(dayLength);
-        StartCoroutine("DayToNight");
+
+        if (!dayOnly)
+        {
+            StartCoroutine("DayToNight");
+        }
     }
 
     IEnumerator DayToNight()

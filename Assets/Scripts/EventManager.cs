@@ -14,6 +14,7 @@ public class EventManager : MonoBehaviour
     public GameObject oldFoxScarf;
     public GameObject snake;
     public Animator snakeAnimator;
+    public Animator turtleAnimator;
     public GameObject peekJackal;
     public GameObject chaseJackal1;
     public GameObject chaseJackal2;
@@ -94,11 +95,21 @@ public class EventManager : MonoBehaviour
     public string[] snakeLines12;
     public string[] snakeLines13;
 
+    public string[] turtleLines1;
+    public string[] turtleLines2;
+    public string[] turtleLines3;
+    public string[] turtleLines4;
+    public string[] turtleLines5;
+    public string[] turtleLines6;
+    public string[] turtleLines7;
+
     public GameObject oldFoxFace;
     public GameObject oldFoxSmilingFace;
     public GameObject rabbitFace;
     public GameObject rabbitSmilingFace;
     public GameObject snakeFace;
+    public GameObject turtleFace;
+    public GameObject turtleSmilingFace;
 
     [HideInInspector]
     public Color32 originalAmbientColor;
@@ -137,12 +148,14 @@ public class EventManager : MonoBehaviour
                 case 1:
                     respawnPos = respawn1.transform.position;
                     cpCollider1.SetActive(false);
+                    TimeManager.timeInstance.dayOnly = false;
                     break;
 
                 case 2:
                     respawnPos = respawn2.transform.position;
                     cpCollider1.SetActive(false);
                     cpCollider2.SetActive(false);
+                    TimeManager.timeInstance.dayOnly = false;
                     break;
 
                 case 3:
@@ -150,6 +163,7 @@ public class EventManager : MonoBehaviour
                     cpCollider1.SetActive(false);
                     cpCollider2.SetActive(false);
                     cpCollider3.SetActive(false);
+                    TimeManager.timeInstance.dayOnly = true;
                     break;
 
                 case 4:
@@ -158,11 +172,13 @@ public class EventManager : MonoBehaviour
                     cpCollider2.SetActive(false);
                     cpCollider3.SetActive(false);
                     cpCollider4.SetActive(false);
+                    TimeManager.timeInstance.dayOnly = false;
                     break;
 
                 default:
                     respawnPos = respawn1.transform.position;
                     cpCollider1.SetActive(false);
+                    TimeManager.timeInstance.dayOnly = false;
                     break;
             }
         }
@@ -322,6 +338,30 @@ public class EventManager : MonoBehaviour
                             StartCoroutine("Snake13");
                             break;
 
+                        case "turtle1":
+                            StartCoroutine("Turtle2");
+                            break;
+
+                        case "turtle3":
+                            StartCoroutine("Turtle4");
+                            break;
+
+                        case "turtle4":
+                            StartCoroutine("Turtle5");
+                            break;
+
+                        case "turtle5":
+                            StartCoroutine("Turtle6");
+                            break;
+
+                        case "turtle6":
+                            StartCoroutine("Turtle7");
+                            break;
+
+                        case "turtle7":
+                            StartCoroutine("Turtle8");
+                            break;
+
                         case "chase":
                             StartCoroutine("Chase");
                             break;
@@ -404,6 +444,10 @@ public class EventManager : MonoBehaviour
 
                 case "snake13":
                     StartCoroutine("Snake14");
+                    break;
+
+                case "turtle2":
+                    StartCoroutine("Turtle3");
                     break;
 
                 default:
@@ -1045,6 +1089,148 @@ public class EventManager : MonoBehaviour
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
         hpBar.SetActive(true);
         staminaBar.SetActive(true);
+    }
+
+    IEnumerator Turtle1()
+    {
+        hpBar.SetActive(false);
+        staminaBar.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
+        yield return new WaitForSeconds(1f);
+
+        camTurnTime = 1f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = 90f;
+        camStartY = cineCam.m_YAxis.Value;
+        camTargetY = -0.4f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(1f);
+
+        PlayerManager.playerInstance.x = 1f;
+        PlayerManager.playerInstance.z = 1f;
+
+        yield return new WaitForSeconds(1f);
+
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
+        yield return new WaitForSeconds(1f);
+
+        currentConv = "turtle1";
+        npcTextField.SetActive(true);
+        Cursor.visible = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = turtleLines1;
+        turtleFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Turtle2()
+    {
+        turtleFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "turtle2";
+        choiceText1.text = turtleLines2[0];
+        choice1.SetActive(true);
+    }
+
+    IEnumerator Turtle3()
+    {
+        currentConv = "turtle3";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = turtleLines3;
+        turtleFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Turtle4()
+    {
+        turtleFace.SetActive(false);
+        currentConv = "turtle4";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = turtleLines4;
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Turtle5()
+    {
+        currentConv = "turtle5";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = turtleLines5;
+        turtleFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Turtle6()
+    {
+        turtleFace.SetActive(false);
+        currentConv = "turtle6";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = turtleLines6;
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Turtle7()
+    {
+        currentConv = "turtle7";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = turtleLines7;
+        turtleFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Turtle8()
+    {
+        npcTextField.SetActive(false);
+        Cursor.visible = false;
+        turtleFace.SetActive(false);
+
+        turtleAnimator.SetTrigger("Spell");
+
+        yield return new WaitForSeconds(5f);
+
+        fadeAnimator.SetTrigger("FadeOut");
+
+        yield return new WaitForSeconds(3f);
     }
 
     public IEnumerator EnemyPeek()
