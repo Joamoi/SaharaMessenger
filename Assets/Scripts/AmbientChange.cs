@@ -8,6 +8,7 @@ public class AmbientChange : MonoBehaviour
     public Color32 darkColor;
     public Transform lightEdge;
     public Transform darkEdge;
+    public Transform fox;
 
     private bool ambientChanging = false;
 
@@ -16,7 +17,13 @@ public class AmbientChange : MonoBehaviour
     {
         if (ambientChanging)
         {
-            //float r = math
+            float t = (fox.position.z - lightEdge.position.z) / (darkEdge.position.z - lightEdge.position.z);
+
+            byte r = (byte)Mathf.Lerp(lightColor.r, darkColor.r, t);
+            byte g = (byte)Mathf.Lerp(lightColor.g, darkColor.g, t);
+            byte b = (byte)Mathf.Lerp(lightColor.b, darkColor.b, t);
+
+            RenderSettings.ambientLight = new Color32(r, g, b, 255);
         }
     }
 
