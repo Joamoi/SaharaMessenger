@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3277572858844402121}
   - component: {fileID: 1933060958204124780}
   - component: {fileID: 4411113085628983974}
+  - component: {fileID: 1929238499386348606}
+  - component: {fileID: 8869116316876423504}
   m_Layer: 0
   m_Name: taateli_prefab
   m_TagString: Untagged
@@ -84,3 +86,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1929238499386348606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2753836319381752691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40fc839001bf544996e85e333753a34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &8869116316876423504
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2753836319381752691}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4
+  m_Center: {x: -0.01970495, y: 0.018093897, z: 0.0029944908}

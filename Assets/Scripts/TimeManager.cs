@@ -28,8 +28,12 @@ public class TimeManager : MonoBehaviour
 
     public AudioSource daySound;
     public AudioSource nightSound;
-    public float originalDayVolume;
-    public float originalNightVolume;
+    private float originalDayVolume;
+    private float originalNightVolume;
+
+    public ParticleSystem[] sandstorms;
+    public Color32 dayStormColor;
+    public Color32 nightStormColor;
 
     //public GameObject skybox;
     private float blend;
@@ -61,6 +65,17 @@ public class TimeManager : MonoBehaviour
 
             blend = ((1f - (transitionLength - transitionTime)) / transitionLength) + 1f;
             //skybox.GetComponent<SkyboxBlender>().blend = blend;
+
+            float t = (transitionLength - transitionTime) / transitionLength;
+
+            byte r = (byte)Mathf.Lerp(dayStormColor.r, nightStormColor.r, t);
+            byte g = (byte)Mathf.Lerp(dayStormColor.g, nightStormColor.g, t);
+            byte b = (byte)Mathf.Lerp(dayStormColor.b, nightStormColor.b, t);
+
+            for (int i = 0; i < sandstorms.Length; i++)
+            {
+                //sandstorms[i].main.startColor = new Color32(r,g,b,255);
+            }
         }
 
         if (nightToDay)
