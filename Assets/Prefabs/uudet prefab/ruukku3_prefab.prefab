@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1598276897283660134}
   - component: {fileID: 2195045114213783428}
   - component: {fileID: 4002290528089887987}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7982328219334211002}
-  m_Layer: 0
+  - component: {fileID: 7342865725633970660}
+  m_Layer: 6
   m_Name: ruukku3_prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,3 +116,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7342865725633970660
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7317572682714558208}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2701441, y: 0.253505, z: 0.25822067}
+  m_Center: {x: 0.004927933, y: 0.11559999, z: 0.0041103363}
