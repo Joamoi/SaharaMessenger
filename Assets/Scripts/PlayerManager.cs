@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -408,35 +409,38 @@ public class PlayerManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        hp = 100f;
-        stamina = 100f;
+        //hp = 100f;
+        //stamina = 100f;
 
-        animator.SetTrigger("Respawn");
+        //animator.SetTrigger("Respawn");
 
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
 
-        gameObject.GetComponent<CharacterController>().enabled = false;
-        transform.position = EventManager.eventInstance.respawnPos;
-        gameObject.GetComponent<CharacterController>().enabled = true;
+        //gameObject.GetComponent<CharacterController>().enabled = false;
+        //transform.position = EventManager.eventInstance.respawnPos;
+        //gameObject.GetComponent<CharacterController>().enabled = true;
 
-        if (EventManager.eventInstance.cpValue == 3)
-        {
-            TimeManager.timeInstance.dayOnly = true;
-        }
+        //if (EventManager.eventInstance.cpValue == 3)
+        //{
+        //    TimeManager.timeInstance.dayOnly = true;
+        //}
 
-        else
-        {
-            TimeManager.timeInstance.dayOnly = false;
-        }
+        //else
+        //{
+        //    TimeManager.timeInstance.dayOnly = false;
+        //}
 
         // reset anything necessary: hide jackals, fix dropfloor, heal, ...
 
-        EventManager.eventInstance.fadeAnimator.SetTrigger("FadeIn");
+        //EventManager.eventInstance.fadeAnimator.SetTrigger("FadeIn");
 
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
 
-        dead = false;
-        canMove = true;
+        //dead = false;
+        //canMove = true;
+
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 
     IEnumerator InAir()

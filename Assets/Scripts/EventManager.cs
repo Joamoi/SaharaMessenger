@@ -15,11 +15,12 @@ public class EventManager : MonoBehaviour
     public GameObject snake;
     public Animator snakeAnimator;
     public Animator turtleAnimator;
-    public GameObject peekJackal;
+    public GameObject peekJackal1;
+    public Animator peekAnimator1;
     public GameObject chaseJackal1;
     public GameObject chaseJackal2;
     public GameObject chaseJackal3;
-    public Animator peekEnemyAnimator;
+    public GameObject chaseSandstorm;
     public Collider startRockCollider1;
     public Collider startRockCollider2;
     public Transform startPos;
@@ -1233,7 +1234,7 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
     }
 
-    public IEnumerator EnemyPeek()
+    public IEnumerator EnemyPeek1()
     {
         hpBar.SetActive(false);
         staminaBar.SetActive(false);
@@ -1245,27 +1246,27 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
-        peekJackal.SetActive(true);
+        peekJackal1.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
-        camTurnTime = 1f;
+        camTurnTime = 1.5f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 45f;
+        camTargetX = 90f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = 0f;
+        camTargetY = -0.4f;
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
-        peekEnemyAnimator.SetTrigger("Peek");
+        peekAnimator1.SetTrigger("Peek");
 
         yield return new WaitForSeconds(3f);
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 125f;
+        camTargetX = 0f;
         camStartY = cineCam.m_YAxis.Value;
         camTargetY = 0.3f;
         lerpFloat = 0f;
@@ -1273,7 +1274,7 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        peekJackal.SetActive(false);
+        peekJackal1.SetActive(false);
 
         PlayerManager.playerInstance.canMove = true;
         PlayerManager.playerInstance.noDrain = false;
@@ -1283,7 +1284,7 @@ public class EventManager : MonoBehaviour
         staminaBar.SetActive(true);
     }
 
-    public IEnumerator EnemyChaseTalk(string[] newSpeechLines)
+    public IEnumerator EnemyChaseTalk()
     {
         hpBar.SetActive(false);
         staminaBar.SetActive(false);
@@ -1295,6 +1296,21 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
+        chaseJackal1.transform.position = fox.transform.position + new Vector3(-10f, -10f, 5f);
+        Vector3 direction = (chaseJackal1.transform.position - fox.transform.position).normalized;
+        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        chaseJackal1.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+        chaseJackal2.transform.position = fox.transform.position + new Vector3(0f, -10f, 5f);
+        direction = (chaseJackal2.transform.position - fox.transform.position).normalized;
+        targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        chaseJackal2.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+        chaseJackal2.transform.position = fox.transform.position + new Vector3(-10f, 0f, 5f);
+        direction = (chaseJackal3.transform.position - fox.transform.position).normalized;
+        targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        chaseJackal3.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
         chaseJackal1.SetActive(true);
         chaseJackal2.SetActive(true);
         chaseJackal3.SetActive(true);
@@ -1303,7 +1319,7 @@ public class EventManager : MonoBehaviour
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 180f;
+        camTargetX = 225f;
         camStartY = cineCam.m_YAxis.Value;
         camTargetY = 0.3f;
         lerpFloat = 0f;
@@ -1327,7 +1343,7 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         lineIndex = 0;
-        speechLines = newSpeechLines;
+        //speechLines = newSpeechLines;
 
         StartCoroutine("NextLine");
     }
