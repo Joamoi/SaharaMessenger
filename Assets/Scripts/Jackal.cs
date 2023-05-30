@@ -59,7 +59,7 @@ public class Jackal : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir * speed * Time.deltaTime);
 
-            if (Physics.OverlapSphere(transform.position, 1f, playerLayer).Length != 0)
+            if (Physics.OverlapSphere(transform.position, 0.5f, playerLayer).Length != 0)
             {
                 PlayerManager.playerInstance.StartCoroutine("Death");
             }

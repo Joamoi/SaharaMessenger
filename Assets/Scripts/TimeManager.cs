@@ -40,7 +40,7 @@ public class TimeManager : MonoBehaviour
     public Color32 dayStormColor;
     public Color32 nightStormColor;
 
-    public GameObject skybox;
+    //public GameObject skybox;
     private float blend;
 
     void Awake()
@@ -74,7 +74,7 @@ public class TimeManager : MonoBehaviour
             }
 
             blend = ((1f - (transitionLength - transitionTime)) / transitionLength) + 1f;
-            skybox.GetComponent<SkyboxBlender>().blend = blend;
+            //skybox.GetComponent<SkyboxBlender>().blend = blend;
 
             float t = 1f - (transitionLength - transitionTime) / (transitionLength / 2f);
 
@@ -103,7 +103,7 @@ public class TimeManager : MonoBehaviour
             }
 
             blend = (transitionLength - transitionTime) / (transitionLength);
-            skybox.GetComponent<SkyboxBlender>().blend = blend;
+            //skybox.GetComponent<SkyboxBlender>().blend = blend;
 
             float t = (transitionLength / 2f - transitionTime) / (transitionLength / 2f);
 

@@ -8,7 +8,7 @@ public class SandstormEnd : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            EventManager.eventInstance.StartCoroutine("SandstormEnd");
+            EventManager.eventInstance.SandstormEnd();
             gameObject.SetActive(false);
         }
     }

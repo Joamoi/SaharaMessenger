@@ -385,10 +385,6 @@ public class EventManager : MonoBehaviour
                             StartCoroutine("Chase5");
                             break;
 
-                        case "chase5":
-                            StartCoroutine("Chase");
-                            break;
-
                         default:
                             StartCoroutine("QuitTalk");
                             break;
@@ -475,6 +471,10 @@ public class EventManager : MonoBehaviour
 
                 case "chase2":
                     StartCoroutine("Chase3");
+                    break;
+
+                case "chase5":
+                    StartCoroutine("Chase");
                     break;
 
                 default:
@@ -1372,9 +1372,9 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
-        chaseJackal1.transform.position = fox.transform.position + new Vector3(-10f, -10f, 5f);
-        chaseJackal2.transform.position = fox.transform.position + new Vector3(0f, -10f, 5f);
-        chaseJackal2.transform.position = fox.transform.position + new Vector3(-10f, 0f, 5f);
+        chaseJackal1.transform.position = fox.transform.position + new Vector3(-9f, 10f, -9f);
+        chaseJackal2.transform.position = fox.transform.position + new Vector3(-10f, 10f, -5f);
+        chaseJackal3.transform.position = fox.transform.position + new Vector3(-5f, 10f, -10f);
 
         chaseJackal1.SetActive(true);
         chaseJackal2.SetActive(true);
@@ -1416,6 +1416,20 @@ public class EventManager : MonoBehaviour
     IEnumerator Chase2()
     {
         jackalFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        chaseJackal1.GetComponent<Jackal>().StartCoroutine("StartWalk");
+        chaseJackal2.GetComponent<Jackal>().StartCoroutine("StartWalk");
+        chaseJackal3.GetComponent<Jackal>().StartCoroutine("StartWalk");
+
+        yield return new WaitForSeconds(1f);
+
+        chaseJackal1.GetComponent<Jackal>().StartCoroutine("StopWalk");
+        chaseJackal2.GetComponent<Jackal>().StartCoroutine("StopWalk");
+        chaseJackal3.GetComponent<Jackal>().StartCoroutine("StopWalk");
+
+        yield return new WaitForSeconds(0.5f);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -1472,17 +1486,17 @@ public class EventManager : MonoBehaviour
         chaseJackal2.GetComponent<Jackal>().StartCoroutine("StartChase");
         chaseJackal3.GetComponent<Jackal>().StartCoroutine("StartChase");
 
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(1f);
 
-        camTurnTime = 0.3f;
-        camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 0f;
-        camStartY = cineCam.m_YAxis.Value;
-        camTargetY = 0.3f;
-        lerpFloat = 0f;
-        camTurning = true;
+        //camTurnTime = 0.3f;
+        //camStartX = cineCam.m_XAxis.Value;
+        //camTargetX = 0f;
+        //camStartY = cineCam.m_YAxis.Value;
+        //camTargetY = 0.3f;
+        //lerpFloat = 0f;
+        //camTurning = true;
 
-        yield return new WaitForSeconds(0.4f);
+        //yield return new WaitForSeconds(0.4f);
 
         PlayerManager.playerInstance.canMove = true;
         PlayerManager.playerInstance.noDrain = false;
@@ -1492,19 +1506,23 @@ public class EventManager : MonoBehaviour
         staminaBar.SetActive(true);
     }
 
-    public void StopChase()
+    public IEnumerator ChaseSandstorm()
     {
+        chaseSandstorm.SetActive(true);
+
+        yield return new WaitForSeconds(3f);
+
+        chaseSandstorm.GetComponent<BoxCollider>().enabled = true;
+
+        yield return new WaitForSeconds(1f);
+
         chaseJackal1.GetComponent<Jackal>().StopChase();
         chaseJackal2.GetComponent<Jackal>().StopChase();
         chaseJackal3.GetComponent<Jackal>().StopChase();
-
-        chaseSandstorm.SetActive(true);
     }
 
     public void SandstormEnd()
     {
-        chaseSandstorm.SetActive(false);
-
         chaseJackal1.SetActive(false);
         chaseJackal2.SetActive(false);
         chaseJackal3.SetActive(false);
