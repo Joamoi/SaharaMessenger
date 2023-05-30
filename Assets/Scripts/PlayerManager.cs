@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -22,9 +23,11 @@ public class PlayerManager : MonoBehaviour
     public bool dead = false;
     [HideInInspector]
     public bool noDrain = false;
-    private float speed;
+    [HideInInspector]
+    public float speed;
     public float runSpeed;
     public float walkSpeed;
+    public float dustSpeed;
     public float gravity;
     public float jumpHeight;
 
@@ -91,9 +94,13 @@ public class PlayerManager : MonoBehaviour
     public GameObject talkText;
     public GameObject restText;
 
-    public GameObject chaseJackal1;
-    public GameObject chaseJackal2;
-    public GameObject chaseJackal3;
+    public AudioSource[] steps;
+    public float stepInterval;
+    public float runInterval1;
+    public float runInterval2;
+    public float dustIntervalMultiplier;
+    private float runInterval;
+    private float stepTimer;
 
     void Awake()
     {
@@ -106,6 +113,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         speed = walkSpeed;
+        runInterval = runInterval1;
 
         hp100PosX = hpMask.transform.position.x;
         hp0PosX = hp100PosX - 3.2f;
@@ -191,9 +199,60 @@ public class PlayerManager : MonoBehaviour
             {
                 speed = runSpeed;
             }
+            else if (inDust)
+            {
+                speed = dustSpeed;
+            }
+
             else
             {
                 speed = walkSpeed;
+            }
+
+            if (direction.magnitude >= 0.1f)
+            {
+                stepTimer += Time.deltaTime;
+
+                if (Input.GetKey(KeyCode.LeftShift) && canRun)
+                {
+                    if (stepTimer >= runInterval)
+                    {
+                        steps[Random.Range(0, steps.Length)].Play();
+                        stepTimer = 0f;
+
+                        if(runInterval == runInterval1)
+                        {
+                            runInterval = runInterval2;
+                        }
+
+                        else
+                        {
+                            runInterval = runInterval1;
+                        }
+                    }
+                }
+
+                else
+                {
+                    if (inDust)
+                    {
+                        if (stepTimer >= dustIntervalMultiplier * stepInterval)
+                        {
+                            steps[Random.Range(0, steps.Length)].Play();
+                            stepTimer = 0f;
+                        }
+                    }
+
+                    else
+                    {
+                        if (stepTimer >= stepInterval)
+                        {
+                            steps[Random.Range(0, steps.Length)].Play();
+                            stepTimer = 0f;
+                        }
+                    }
+                }
+
             }
         }
 
@@ -249,7 +308,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (direction.magnitude >= 0.1f)
             {
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (Input.GetKey(KeyCode.LeftShift) && canRun)
                 {
                     if (stamina > 0)
                     {
@@ -392,9 +451,9 @@ public class PlayerManager : MonoBehaviour
 
     public IEnumerator Death()
     {
-        chaseJackal1.GetComponent<Jackal>().StopChase();
-        chaseJackal2.GetComponent<Jackal>().StopChase();
-        chaseJackal3.GetComponent<Jackal>().StopChase();
+        EventManager.eventInstance.chaseJackal1.GetComponent<Jackal>().StopChase();
+        EventManager.eventInstance.chaseJackal2.GetComponent<Jackal>().StopChase();
+        EventManager.eventInstance.chaseJackal3.GetComponent<Jackal>().StopChase();
 
         x = 0f;
         z = 0f;

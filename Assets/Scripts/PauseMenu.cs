@@ -14,6 +14,8 @@ public class PauseMenu : MonoBehaviour
     public AudioMixer audioMixer;
     public Slider volumeSlider;
 
+    public Slider camSpeedSlider;
+
     private bool inAreYouSure = false;
 
     // Start is called before the first frame update
@@ -29,6 +31,11 @@ public class PauseMenu : MonoBehaviour
         {
             audioMixer.SetFloat("effectsVolume", Mathf.Log10(PlayerPrefs.GetFloat("effectsVol")) * 20);
             volumeSlider.value = (PlayerPrefs.GetFloat("effectsVol"));
+        }
+
+        if (!(PlayerPrefs.GetFloat("camSpeed") == 0))
+        {
+            camSpeedSlider.value = PlayerPrefs.GetFloat("camSpeed");
         }
     }
 
@@ -120,5 +127,22 @@ public class PauseMenu : MonoBehaviour
         // slider would be logaritmic without the fix
         audioMixer.SetFloat("effectsVolume", Mathf.Log10(volume) * 20);
         PlayerPrefs.SetFloat("effectsVol", volume);
+    }
+
+    public void SetCamSpeed(float speed)
+    {
+        PlayerPrefs.SetFloat("camSpeed", speed);
+        EventManager.eventInstance.camSpeedX = 75f * speed;
+        EventManager.eventInstance.camSpeedY = speed;
+
+        if (EventManager.eventInstance.cineCam.m_XAxis.m_MaxSpeed != 0)
+        {
+            EventManager.eventInstance.cineCam.m_XAxis.m_MaxSpeed = 75f * speed;
+        }
+
+        if (EventManager.eventInstance.cineCam.m_YAxis.m_MaxSpeed != 0)
+        {
+            EventManager.eventInstance.cineCam.m_YAxis.m_MaxSpeed = speed;
+        }
     }
 }

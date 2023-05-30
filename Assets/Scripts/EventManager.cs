@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using TMPro;
+using UnityEngine.Audio;
 
 public class EventManager : MonoBehaviour
 {
@@ -46,8 +47,10 @@ public class EventManager : MonoBehaviour
     public TextMeshProUGUI choiceText2;
     public TextMeshProUGUI choiceText3;
 
-    private float camSpeedX;
-    private float camSpeedY;
+    [HideInInspector]
+    public float camSpeedX;
+    [HideInInspector]
+    public float camSpeedY;
     private bool camTurning = false;
     private float camTurnTime;
     private float camStartX;
@@ -140,6 +143,9 @@ public class EventManager : MonoBehaviour
     [HideInInspector]
     public Vector3 respawnPos;
 
+    public AudioSource normalMusic;
+    public AudioSource chaseMusic;
+
     void Awake()
     {
         eventInstance = this;
@@ -147,8 +153,20 @@ public class EventManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
 
-        camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
-        camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
+        if (!(PlayerPrefs.GetFloat("camSpeed") == 0))
+        {
+            camSpeedX = 75f * PlayerPrefs.GetFloat("camSpeed");
+            camSpeedY = PlayerPrefs.GetFloat("camSpeed");
+
+            cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
+            cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
+        }
+
+        else
+        {
+            camSpeedX = cineCam.m_XAxis.m_MaxSpeed;
+            camSpeedY = cineCam.m_YAxis.m_MaxSpeed;
+        }
 
         if (!(PlayerPrefs.GetInt("cpValue") == 0) && startFromCheckPoint)
         {
@@ -206,6 +224,7 @@ public class EventManager : MonoBehaviour
             else
             {
                 scarf.SetActive(true);
+                normalMusic.Play();
             }
         }
     }
@@ -232,15 +251,15 @@ public class EventManager : MonoBehaviour
     void Update()
     {
         // for testing
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            RenderSettings.ambientLight = originalAmbientColor;
-        }
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    RenderSettings.ambientLight = originalAmbientColor;
+        //}
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            RenderSettings.ambientLight = new Color32(50, 50, 50, 255);
-        }
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    RenderSettings.ambientLight = new Color32(50, 50, 50, 255);
+        //}
 
         if (camTurning)
         {
@@ -722,6 +741,8 @@ public class EventManager : MonoBehaviour
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
         hpBar.SetActive(true);
         staminaBar.SetActive(true);
+
+        normalMusic.Play();
     }
 
     public IEnumerator Rabbit1()
@@ -1382,6 +1403,8 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        normalMusic.Stop();
+
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
         camTargetX = 225f;
@@ -1479,6 +1502,8 @@ public class EventManager : MonoBehaviour
 
     public IEnumerator Chase()
     {
+        chaseMusic.Play();
+
         npcTextField.SetActive(false);
         Cursor.visible = false;
 
@@ -1523,9 +1548,12 @@ public class EventManager : MonoBehaviour
 
     public void SandstormEnd()
     {
-        chaseJackal1.SetActive(false);
-        chaseJackal2.SetActive(false);
-        chaseJackal3.SetActive(false);
+        chaseMusic.Stop();
+        normalMusic.Play();
+
+        //chaseJackal1.SetActive(false);
+        //chaseJackal2.SetActive(false);
+        //chaseJackal3.SetActive(false);
     }
 
     public IEnumerator Talk(string[] newSpeechLines)

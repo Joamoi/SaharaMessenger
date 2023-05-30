@@ -9,6 +9,7 @@ public class DustArea : MonoBehaviour
         if (other.tag == "Player")
         {
             PlayerManager.playerInstance.animator.SetBool("InDust", true);
+            PlayerManager.playerInstance.inDust = true;
         }
     }
 
@@ -16,6 +17,7 @@ public class DustArea : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            PlayerManager.playerInstance.inDust = false;
             PlayerManager.playerInstance.animator.SetBool("InDust", false);
         }
     }
