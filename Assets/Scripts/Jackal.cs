@@ -8,7 +8,10 @@ public class Jackal : MonoBehaviour
     public Animator animator;
     public GameObject fox;
     private bool chasing = false;
-    public float speed;
+    private bool walking = false;
+    private float speed;
+    public float walkSpeed;
+    public float runSpeed;
     public LayerMask playerLayer;
     public LayerMask enemyLayer;
     public float startDelay;
@@ -24,6 +27,8 @@ public class Jackal : MonoBehaviour
     void Start()
     {
         controller.detectCollisions = false;
+
+        speed = walkSpeed;
     }
 
     // Update is called once per frame
@@ -42,6 +47,12 @@ public class Jackal : MonoBehaviour
         targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 
         transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+
+        if (walking)
+        {
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(moveDir * speed * Time.deltaTime);
+        }
 
         if (chasing)
         {
@@ -78,6 +89,7 @@ public class Jackal : MonoBehaviour
     {
         yield return new WaitForSeconds(startDelay);
 
+        speed = runSpeed;
         chasing = true;
         animator.SetBool("Running", true);
     }
@@ -97,5 +109,17 @@ public class Jackal : MonoBehaviour
 
         chasing = true;
         animator.SetBool("Running", true);
+    }
+
+    public void StartWalk()
+    {
+        walking = true;
+        animator.SetBool("Walking", true);
+    }
+
+    public void StopWalk()
+    {
+        walking = false;
+        animator.SetBool("Walking", false);
     }
 }

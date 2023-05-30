@@ -16,7 +16,9 @@ public class EventManager : MonoBehaviour
     public Animator snakeAnimator;
     public Animator turtleAnimator;
     public GameObject peekJackal1;
+    public GameObject peekJackal2;
     public Animator peekAnimator1;
+    public Animator peekAnimator2;
     public GameObject chaseJackal1;
     public GameObject chaseJackal2;
     public GameObject chaseJackal3;
@@ -104,6 +106,12 @@ public class EventManager : MonoBehaviour
     public string[] turtleLines6;
     public string[] turtleLines7;
 
+    public string[] chaseLines1;
+    public string[] chaseLines2;
+    public string[] chaseLines3;
+    public string[] chaseLines4;
+    public string[] chaseLines5;
+
     public GameObject oldFoxFace;
     public GameObject oldFoxSmilingFace;
     public GameObject rabbitFace;
@@ -111,6 +119,8 @@ public class EventManager : MonoBehaviour
     public GameObject snakeFace;
     public GameObject turtleFace;
     public GameObject turtleSmilingFace;
+    public GameObject jackalFace;
+    public GameObject jackalGrinFace;
 
     [HideInInspector]
     public Color32 originalAmbientColor;
@@ -363,7 +373,19 @@ public class EventManager : MonoBehaviour
                             StartCoroutine("Turtle8");
                             break;
 
-                        case "chase":
+                        case "chase1":
+                            StartCoroutine("Chase2");
+                            break;
+
+                        case "chase3":
+                            StartCoroutine("Chase4");
+                            break;
+
+                        case "chase4":
+                            StartCoroutine("Chase5");
+                            break;
+
+                        case "chase5":
                             StartCoroutine("Chase");
                             break;
 
@@ -449,6 +471,10 @@ public class EventManager : MonoBehaviour
 
                 case "turtle2":
                     StartCoroutine("Turtle3");
+                    break;
+
+                case "chase2":
+                    StartCoroutine("Chase3");
                     break;
 
                 default:
@@ -1254,7 +1280,7 @@ public class EventManager : MonoBehaviour
         camStartX = cineCam.m_XAxis.Value;
         camTargetX = 90f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = -0.4f;
+        camTargetY = 0f;
         lerpFloat = 0f;
         camTurning = true;
 
@@ -1284,6 +1310,56 @@ public class EventManager : MonoBehaviour
         staminaBar.SetActive(true);
     }
 
+    public IEnumerator EnemyPeek2()
+    {
+        hpBar.SetActive(false);
+        staminaBar.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
+        peekJackal2.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        camTurnTime = 1.5f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = 120f;
+        camStartY = cineCam.m_YAxis.Value;
+        camTargetY = -0.4f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(2f);
+
+        peekAnimator2.SetTrigger("Peek");
+
+        yield return new WaitForSeconds(3f);
+
+        camTurnTime = 1f;
+        camStartX = cineCam.m_XAxis.Value;
+        camTargetX = 0f;
+        camStartY = cineCam.m_YAxis.Value;
+        camTargetY = 0.3f;
+        lerpFloat = 0f;
+        camTurning = true;
+
+        yield return new WaitForSeconds(1.5f);
+
+        peekJackal2.SetActive(false);
+
+        PlayerManager.playerInstance.canMove = true;
+        PlayerManager.playerInstance.noDrain = false;
+        cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
+        cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
+        hpBar.SetActive(true);
+        staminaBar.SetActive(true);
+    }
+
     public IEnumerator EnemyChaseTalk()
     {
         hpBar.SetActive(false);
@@ -1297,19 +1373,8 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.z = 0f;
 
         chaseJackal1.transform.position = fox.transform.position + new Vector3(-10f, -10f, 5f);
-        Vector3 direction = (chaseJackal1.transform.position - fox.transform.position).normalized;
-        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        chaseJackal1.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-
         chaseJackal2.transform.position = fox.transform.position + new Vector3(0f, -10f, 5f);
-        direction = (chaseJackal2.transform.position - fox.transform.position).normalized;
-        targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        chaseJackal2.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-
         chaseJackal2.transform.position = fox.transform.position + new Vector3(-10f, 0f, 5f);
-        direction = (chaseJackal3.transform.position - fox.transform.position).normalized;
-        targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        chaseJackal3.transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
 
         chaseJackal1.SetActive(true);
         chaseJackal2.SetActive(true);
@@ -1335,17 +1400,67 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        currentConv = "chase";
-        npcText.text = "";
+        currentConv = "chase1";
         npcTextField.SetActive(true);
         Cursor.visible = true;
 
         yield return new WaitForSeconds(0.2f);
 
         lineIndex = 0;
-        //speechLines = newSpeechLines;
+        speechLines = chaseLines1;
+        jackalFace.SetActive(true);
 
         StartCoroutine("NextLine");
+    }
+
+    IEnumerator Chase2()
+    {
+        jackalFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "chase2";
+        choiceText1.text = chaseLines2[0];
+        choice1.SetActive(true);
+    }
+
+    IEnumerator Chase3()
+    {
+        currentConv = "chase3";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = chaseLines3;
+        jackalFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Chase4()
+    {
+        currentConv = "chase4";
+        npcTextField.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = chaseLines4;
+        jackalFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    IEnumerator Chase5()
+    {
+        jackalFace.SetActive(false);
+
+        yield return new WaitForSeconds(0.2f);
+
+        currentConv = "chase5";
+        choiceText1.text = chaseLines5[0];
+        choice1.SetActive(true);
     }
 
     public IEnumerator Chase()
@@ -1375,6 +1490,24 @@ public class EventManager : MonoBehaviour
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
         hpBar.SetActive(true);
         staminaBar.SetActive(true);
+    }
+
+    public void StopChase()
+    {
+        chaseJackal1.GetComponent<Jackal>().StopChase();
+        chaseJackal2.GetComponent<Jackal>().StopChase();
+        chaseJackal3.GetComponent<Jackal>().StopChase();
+
+        chaseSandstorm.SetActive(true);
+    }
+
+    public void SandstormEnd()
+    {
+        chaseSandstorm.SetActive(false);
+
+        chaseJackal1.SetActive(false);
+        chaseJackal2.SetActive(false);
+        chaseJackal3.SetActive(false);
     }
 
     public IEnumerator Talk(string[] newSpeechLines)
@@ -1429,13 +1562,6 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
-    }
-
-    public void StopChase()
-    {
-        chaseJackal1.GetComponent<Jackal>().StopChase();
-        chaseJackal2.GetComponent<Jackal>().StopChase();
-        chaseJackal3.GetComponent<Jackal>().StopChase();
     }
 
     public void Choice1()
