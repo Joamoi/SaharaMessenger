@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material 2
+  m_Name: halko
   m_Shader: {fileID: -6465566751694194690, guid: ca6f39be3c92b4441b591ad4ca1258c2,
     type: 3}
   m_ValidKeywords: []
@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: 313a2d172dd22264282ebb2741415f84, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9254924c0cde91b428645cf9d3e9d816, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -105,7 +105,7 @@ Material:
     - _LightProbeContribution: 3.5
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineDepthSensitivity: 0.061
+    - _OutlineDepthSensitivity: 0.12
     - _OutlineNormalsSensitivity: 1
     - _OutlineThickness: 1
     - _Parallax: 0.005
@@ -123,13 +123,13 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 1, g: 0.9764706, b: 0.9098039, a: 0}
+    - _MainColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &7743189398357569933
+--- !u!114 &7497795998034242474
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
