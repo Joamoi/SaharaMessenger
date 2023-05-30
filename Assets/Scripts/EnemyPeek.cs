@@ -15,14 +15,9 @@ public class EnemyPeek : MonoBehaviour
                 EventManager.eventInstance.StartCoroutine("EnemyPeek1");
             }
 
-            else if (peekValue == 2)
-            {
-                EventManager.eventInstance.StartCoroutine("EnemyPeek2");
-            }
-
             else
             {
-                EventManager.eventInstance.StartCoroutine("EnemyPeek3");
+                EventManager.eventInstance.StartCoroutine("EnemyPeek2");
             }
 
             gameObject.SetActive(false);
