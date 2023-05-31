@@ -94,6 +94,9 @@ public class PlayerManager : MonoBehaviour
     public GameObject talkText;
     public GameObject restText;
 
+    public AudioSource eatSound;
+    public AudioSource drinkSound;
+
     public AudioSource[] steps;
     public float stepInterval;
     public float runInterval1;
@@ -379,7 +382,7 @@ public class PlayerManager : MonoBehaviour
         staminaMask.transform.position = new Vector3(newStaminaPosX, staminaMask.transform.position.y, staminaMask.transform.position.z);
     }
 
-    public void Eat()
+    public IEnumerator Eat()
     {
         animator.SetTrigger("Eat");
         x = 0f;
@@ -401,9 +404,13 @@ public class PlayerManager : MonoBehaviour
         }
 
         eatText.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        eatSound.Play();
     }
 
-    public void Drink()
+    public IEnumerator Drink()
     {
         animator.SetTrigger("Eat");
         x = 0f;
@@ -425,11 +432,15 @@ public class PlayerManager : MonoBehaviour
         }
 
         drinkText.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        drinkSound.Play();
     }
 
     IEnumerator EatDontMove()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2f);
         canMove = true;
     }
 

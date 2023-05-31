@@ -28,6 +28,18 @@ public class EventManager : MonoBehaviour
     public Collider startRockCollider2;
     public Transform startPos;
     public CinemachineFreeLook cineCam;
+    public GameObject camTarget;
+    public Transform endCamPos1;
+    public Transform endCamPos2;
+    public Transform endCamPos3;
+    public Transform endCamPos4;
+    public Transform endCamPos5;
+    public Transform endCamPos6;
+    private bool endCamMoving = false;
+    private Vector3 endCamStartPos;
+    private Vector3 endCamEndPos;
+    private float endCamTimer;
+    private float endCamDuration;
     public bool playStartCutscene;
     public bool startFromCheckPoint;
 
@@ -145,6 +157,11 @@ public class EventManager : MonoBehaviour
 
     public AudioSource normalMusic;
     public AudioSource chaseMusic;
+    public AudioSource oldFoxSound;
+    public AudioSource jackalSound;
+    public AudioSource snakeSound;
+    public AudioSource turtleSound;
+    public AudioSource sheepSound;
 
     void Awake()
     {
@@ -245,6 +262,10 @@ public class EventManager : MonoBehaviour
         //StartCoroutine("HideFade", 3f);
 
         originalAmbientColor = RenderSettings.ambientLight;
+
+        //cineCam.m_XAxis.m_MaxSpeed = 0f;
+        //cineCam.m_YAxis.m_MaxSpeed = 0f;
+        //StartCoroutine("EndScene");
     }
 
     // Update is called once per frame
@@ -273,6 +294,12 @@ public class EventManager : MonoBehaviour
 
             cineCam.m_XAxis.Value = Mathf.Lerp(camStartX, camTargetX, lerpFloat);
             cineCam.m_YAxis.Value = Mathf.Lerp(camStartY, camTargetY, lerpFloat);
+        }
+
+        if (endCamMoving)
+        {
+            endCamTimer += Time.deltaTime;
+            camTarget.transform.position = Vector3.Lerp(endCamStartPos, endCamEndPos, endCamTimer / endCamDuration);
         }
 
         if (lineShown)
@@ -529,6 +556,8 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.z = 0f;
 
         yield return new WaitForSeconds(1f);
+
+        oldFoxSound.Play();
 
         currentConv = "oldFox1";
         npcTextField.SetActive(true);
@@ -908,6 +937,8 @@ public class EventManager : MonoBehaviour
 
         snake.SetActive(true);
 
+        snakeSound.Play();
+
         yield return new WaitForSeconds(1f);
 
         snakeAnimator.SetTrigger("Tongue");
@@ -1172,6 +1203,8 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        turtleSound.Play();
+
         currentConv = "turtle1";
         npcTextField.SetActive(true);
         Cursor.visible = true;
@@ -1279,6 +1312,70 @@ public class EventManager : MonoBehaviour
         fadeAnimator.SetTrigger("FadeOut");
 
         yield return new WaitForSeconds(3f);
+
+        StartCoroutine("EndScene");
+    }
+
+    IEnumerator EndScene()
+    {
+        camTarget.transform.SetParent(null);
+
+        camTarget.transform.position = endCamPos1.position;
+        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        endCamStartPos = endCamPos1.position;
+        endCamEndPos = endCamPos2.position;
+
+        cineCam.m_YAxis.Value = -1f;
+        cineCam.m_XAxis.Value = -90f;
+
+        endCamDuration = 8f;
+        endCamMoving = true;
+
+        fadeAnimator.SetTrigger("FadeIn");
+
+        yield return new WaitForSeconds(6f);
+
+        fadeAnimator.SetTrigger("FadeOut");
+
+        yield return new WaitForSeconds(3f);
+
+        camTarget.transform.position = endCamPos3.position;
+        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        endCamStartPos = endCamPos3.position;
+        endCamEndPos = endCamPos4.position;
+
+        cineCam.m_YAxis.Value = -1f;
+        cineCam.m_XAxis.Value = -135f;
+
+        endCamDuration = 8f;
+
+        fadeAnimator.SetTrigger("FadeIn");
+
+        yield return new WaitForSeconds(6f);
+
+        fadeAnimator.SetTrigger("FadeOut");
+
+        yield return new WaitForSeconds(3f);
+
+        camTarget.transform.position = endCamPos5.position;
+        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        endCamStartPos = endCamPos5.position;
+        endCamEndPos = endCamPos6.position;
+
+        cineCam.m_YAxis.Value = -1f;
+        cineCam.m_XAxis.Value = -135f;
+
+        endCamDuration = 8f;
+
+        fadeAnimator.SetTrigger("FadeIn");
+
+        yield return new WaitForSeconds(6f);
+
+        fadeAnimator.SetTrigger("FadeOut");
+
+        yield return new WaitForSeconds(3f);
+
+        endCamMoving = false;
     }
 
     public IEnumerator EnemyPeek1()
@@ -1422,6 +1519,8 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.z = 0f;
 
         yield return new WaitForSeconds(0.5f);
+
+        jackalSound.Play();
 
         currentConv = "chase1";
         npcTextField.SetActive(true);

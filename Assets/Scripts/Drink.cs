@@ -13,7 +13,7 @@ public class Drink : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                PlayerManager.playerInstance.Drink();
+                PlayerManager.playerInstance.StartCoroutine("Drink");
             }
         }
     }

@@ -13,7 +13,7 @@ public class Food : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                PlayerManager.playerInstance.Eat();
+                PlayerManager.playerInstance.StartCoroutine("Eat");
                 StartCoroutine("DestroyFood");
             }
         }
