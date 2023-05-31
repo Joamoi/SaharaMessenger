@@ -29,6 +29,7 @@ public class EventManager : MonoBehaviour
     public Transform startPos;
     public CinemachineFreeLook cineCam;
     public GameObject camTarget;
+    public Transform turtleCamPos;
     public Transform endCamPos1;
     public Transform endCamPos2;
     public Transform endCamPos3;
@@ -46,8 +47,7 @@ public class EventManager : MonoBehaviour
     public GameObject fade;
     public Animator fadeAnimator;
 
-    public GameObject hpBar;
-    public GameObject staminaBar;
+    public GameObject uiObjects;
     public GameObject npcTextField;
     public GameObject npcTextObject;
     public TextMeshProUGUI npcText;
@@ -127,6 +127,10 @@ public class EventManager : MonoBehaviour
     public string[] chaseLines4;
     public string[] chaseLines5;
 
+    public string[] sheepLines;
+    public string[] jackalLines;
+    public string[] bunniesLines;
+
     public GameObject oldFoxFace;
     public GameObject oldFoxSmilingFace;
     public GameObject rabbitFace;
@@ -136,6 +140,7 @@ public class EventManager : MonoBehaviour
     public GameObject turtleSmilingFace;
     public GameObject jackalFace;
     public GameObject jackalGrinFace;
+    public GameObject sheepFace;
 
     [HideInInspector]
     public Color32 originalAmbientColor;
@@ -162,6 +167,9 @@ public class EventManager : MonoBehaviour
     public AudioSource snakeSound;
     public AudioSource turtleSound;
     public AudioSource sheepSound;
+    public AudioSource snakeRisesSound;
+    public AudioSource rainSound;
+    public AudioSource spellSound;
 
     void Awake()
     {
@@ -532,8 +540,7 @@ public class EventManager : MonoBehaviour
 
     IEnumerator OldFox1()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
@@ -768,16 +775,14 @@ public class EventManager : MonoBehaviour
         startRockCollider2.enabled = true;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
-        hpBar.SetActive(true);
-        staminaBar.SetActive(true);
+        uiObjects.SetActive(true);
 
         normalMusic.Play();
     }
 
     public IEnumerator Rabbit1()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
@@ -904,8 +909,7 @@ public class EventManager : MonoBehaviour
 
     IEnumerator Snake1()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
@@ -937,6 +941,7 @@ public class EventManager : MonoBehaviour
 
         snake.SetActive(true);
 
+        snakeRisesSound.Play();
         snakeSound.Play();
 
         yield return new WaitForSeconds(1f);
@@ -1166,14 +1171,12 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
-        hpBar.SetActive(true);
-        staminaBar.SetActive(true);
+        uiObjects.SetActive(true);
     }
 
     IEnumerator Turtle1()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
@@ -1183,23 +1186,31 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        camTurnTime = 1f;
+        camTurnTime = 0.5f;
         camStartX = cineCam.m_XAxis.Value;
-        camTargetX = 90f;
+        camTargetX = 120f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = -0.4f;
+        camTargetY = 0f;
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
-        PlayerManager.playerInstance.x = 1f;
         PlayerManager.playerInstance.z = 1f;
 
+        yield return new WaitForSeconds(2f);
+
+        PlayerManager.playerInstance.z = 0f;
+
         yield return new WaitForSeconds(1f);
 
-        PlayerManager.playerInstance.x = 0f;
-        PlayerManager.playerInstance.z = 0f;
+        camTarget.transform.SetParent(null);
+
+        camTarget.transform.position = turtleCamPos.position;
+        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+        cineCam.m_YAxis.Value = 0.4f;
+        cineCam.m_XAxis.Value = 75f;
 
         yield return new WaitForSeconds(1f);
 
@@ -1306,6 +1317,7 @@ public class EventManager : MonoBehaviour
         turtleFace.SetActive(false);
 
         turtleAnimator.SetTrigger("Spell");
+        spellSound.Play();
 
         yield return new WaitForSeconds(5f);
 
@@ -1318,8 +1330,6 @@ public class EventManager : MonoBehaviour
 
     IEnumerator EndScene()
     {
-        camTarget.transform.SetParent(null);
-
         camTarget.transform.position = endCamPos1.position;
         camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         endCamStartPos = endCamPos1.position;
@@ -1332,12 +1342,15 @@ public class EventManager : MonoBehaviour
         endCamMoving = true;
 
         fadeAnimator.SetTrigger("FadeIn");
+        rainSound.Play();
 
         yield return new WaitForSeconds(6f);
 
         fadeAnimator.SetTrigger("FadeOut");
 
         yield return new WaitForSeconds(3f);
+
+        rainSound.Stop();
 
         camTarget.transform.position = endCamPos3.position;
         camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -1350,12 +1363,15 @@ public class EventManager : MonoBehaviour
         endCamDuration = 8f;
 
         fadeAnimator.SetTrigger("FadeIn");
+        rainSound.Play();
 
         yield return new WaitForSeconds(6f);
 
         fadeAnimator.SetTrigger("FadeOut");
 
         yield return new WaitForSeconds(3f);
+
+        rainSound.Stop();
 
         camTarget.transform.position = endCamPos5.position;
         camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -1368,6 +1384,7 @@ public class EventManager : MonoBehaviour
         endCamDuration = 8f;
 
         fadeAnimator.SetTrigger("FadeIn");
+        rainSound.Play();
 
         yield return new WaitForSeconds(6f);
 
@@ -1375,13 +1392,14 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
+        rainSound.Stop();
+
         endCamMoving = false;
     }
 
     public IEnumerator EnemyPeek1()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
@@ -1424,14 +1442,12 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
-        hpBar.SetActive(true);
-        staminaBar.SetActive(true);
+        uiObjects.SetActive(true);
     }
 
     public IEnumerator EnemyPeek2()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
@@ -1474,14 +1490,12 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
-        hpBar.SetActive(true);
-        staminaBar.SetActive(true);
+        uiObjects.SetActive(true);
     }
 
     public IEnumerator EnemyChaseTalk()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
@@ -1626,8 +1640,7 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;
         cineCam.m_YAxis.m_MaxSpeed = camSpeedY;
-        hpBar.SetActive(true);
-        staminaBar.SetActive(true);
+        uiObjects.SetActive(true);
     }
 
     public IEnumerator ChaseSandstorm()
@@ -1655,17 +1668,91 @@ public class EventManager : MonoBehaviour
         //chaseJackal3.SetActive(false);
     }
 
-    public IEnumerator Talk(string[] newSpeechLines)
+    public IEnumerator Sheep()
     {
-        hpBar.SetActive(false);
-        staminaBar.SetActive(false);
+        uiObjects.SetActive(false);
         PlayerManager.playerInstance.canMove = false;
         PlayerManager.playerInstance.noDrain = true;
         cineCam.m_XAxis.m_MaxSpeed = 0f;
         cineCam.m_YAxis.m_MaxSpeed = 0f;
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
 
-        npcText.text = "";
+        sheepSound.Play();
+
+        currentConv = "normal";
         npcTextField.SetActive(true);
+        Cursor.visible = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = sheepLines;
+        sheepFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    public IEnumerator Jackal()
+    {
+        uiObjects.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
+        jackalSound.Play();
+
+        currentConv = "normal";
+        npcTextField.SetActive(true);
+        Cursor.visible = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = jackalLines;
+        jackalFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    public IEnumerator Bunnies()
+    {
+        uiObjects.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
+        currentConv = "normal";
+        npcTextField.SetActive(true);
+        Cursor.visible = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        lineIndex = 0;
+        speechLines = bunniesLines;
+        rabbitFace.SetActive(true);
+
+        StartCoroutine("NextLine");
+    }
+
+    public IEnumerator Talk(string[] newSpeechLines)
+    {
+        uiObjects.SetActive(false);
+        PlayerManager.playerInstance.canMove = false;
+        PlayerManager.playerInstance.noDrain = true;
+        cineCam.m_XAxis.m_MaxSpeed = 0f;
+        cineCam.m_YAxis.m_MaxSpeed = 0f;
+        PlayerManager.playerInstance.x = 0f;
+        PlayerManager.playerInstance.z = 0f;
+
+        npcTextField.SetActive(true);
+        Cursor.visible = true;
 
         yield return new WaitForSeconds(0.2f);
 
@@ -1696,13 +1783,16 @@ public class EventManager : MonoBehaviour
 
     IEnumerator QuitTalk()
     {
+        sheepFace.SetActive(false);
+        jackalFace.SetActive(false);
+        rabbitFace.SetActive(false);
+
         npcTextField.SetActive(false);
         Cursor.visible = false;
 
         yield return new WaitForSeconds(0.5f);
 
-        hpBar.SetActive(true);
-        staminaBar.SetActive(true);
+        uiObjects.SetActive(true);
         PlayerManager.playerInstance.canMove = true;
         PlayerManager.playerInstance.noDrain = false;
         cineCam.m_XAxis.m_MaxSpeed = camSpeedX;

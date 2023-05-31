@@ -119,11 +119,11 @@ public class PlayerManager : MonoBehaviour
         runInterval = runInterval1;
 
         hp100PosX = hpMask.transform.position.x;
-        hp0PosX = hp100PosX - 3.2f;
+        hp0PosX = hp100PosX - 1.86f;
         hpMax = hp;
 
         stamina100PosX = staminaMask.transform.position.x;
-        stamina0PosX = stamina100PosX - 3.2f;
+        stamina0PosX = stamina100PosX - 1.86f;
         staminaMax = stamina;
 
         idleSwitchTime = Random.Range(8f, 20f);
