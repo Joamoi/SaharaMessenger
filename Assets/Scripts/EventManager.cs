@@ -1409,7 +1409,7 @@ public class EventManager : MonoBehaviour
         camStartX = cineCam.m_XAxis.Value;
         camTargetX = 225f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = 0.3f;
+        camTargetY = 0.4f;
         lerpFloat = 0f;
         camTurning = true;
 
