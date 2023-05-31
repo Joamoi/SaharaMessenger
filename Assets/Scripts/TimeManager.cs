@@ -128,7 +128,7 @@ public class TimeManager : MonoBehaviour
 
         if (!dayOnly)
         {
-            StartCoroutine("DayToNight");
+            //StartCoroutine("DayToNight");
         }
     }
 
@@ -154,7 +154,7 @@ public class TimeManager : MonoBehaviour
         timeDrainMultiplier = nightMultiplier;
         Debug.Log("Night Started");
         yield return new WaitForSeconds(dayLength);
-        StartCoroutine("NightToDay");
+        //StartCoroutine("NightToDay");
     }
 
     IEnumerator NightToDay()

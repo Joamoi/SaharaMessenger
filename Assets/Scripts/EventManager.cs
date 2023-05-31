@@ -29,6 +29,7 @@ public class EventManager : MonoBehaviour
     public Transform startPos;
     public CinemachineFreeLook cineCam;
     public GameObject camTarget;
+    public GameObject mainCam;
     public Transform turtleCamPos;
     public Transform endCamPos1;
     public Transform endCamPos2;
@@ -41,6 +42,10 @@ public class EventManager : MonoBehaviour
     private Vector3 endCamEndPos;
     private float endCamTimer;
     private float endCamDuration;
+    public GameObject rain1;
+    public GameObject rain2;
+    public GameObject rain3;
+
     public bool playStartCutscene;
     public bool startFromCheckPoint;
 
@@ -270,10 +275,6 @@ public class EventManager : MonoBehaviour
         //StartCoroutine("HideFade", 3f);
 
         originalAmbientColor = RenderSettings.ambientLight;
-
-        //cineCam.m_XAxis.m_MaxSpeed = 0f;
-        //cineCam.m_YAxis.m_MaxSpeed = 0f;
-        //StartCoroutine("EndScene");
     }
 
     // Update is called once per frame
@@ -307,7 +308,7 @@ public class EventManager : MonoBehaviour
         if (endCamMoving)
         {
             endCamTimer += Time.deltaTime;
-            camTarget.transform.position = Vector3.Lerp(endCamStartPos, endCamEndPos, endCamTimer / endCamDuration);
+            mainCam.transform.position = Vector3.Lerp(endCamStartPos, endCamEndPos, endCamTimer / endCamDuration);
         }
 
         if (lineShown)
@@ -942,7 +943,7 @@ public class EventManager : MonoBehaviour
         snake.SetActive(true);
 
         snakeRisesSound.Play();
-        snakeSound.Play();
+        //snakeSound.Play();
 
         yield return new WaitForSeconds(1f);
 
@@ -1198,19 +1199,17 @@ public class EventManager : MonoBehaviour
 
         PlayerManager.playerInstance.z = 1f;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         PlayerManager.playerInstance.z = 0f;
 
         yield return new WaitForSeconds(1f);
 
-        camTarget.transform.SetParent(null);
-
-        camTarget.transform.position = turtleCamPos.position;
-        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
-        cineCam.m_YAxis.Value = 0.4f;
-        cineCam.m_XAxis.Value = 75f;
+        cineCam.gameObject.SetActive(false);
+        
+        mainCam.transform.position = turtleCamPos.position;
+        mainCam.transform.eulerAngles = turtleCamPos.eulerAngles;
+        mainCam.GetComponent<Camera>().fieldOfView = 60f;
 
         yield return new WaitForSeconds(1f);
 
@@ -1330,70 +1329,81 @@ public class EventManager : MonoBehaviour
 
     IEnumerator EndScene()
     {
-        camTarget.transform.position = endCamPos1.position;
-        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        mainCam.transform.position = endCamPos1.position;
+        mainCam.transform.eulerAngles = endCamPos1.eulerAngles;
         endCamStartPos = endCamPos1.position;
         endCamEndPos = endCamPos2.position;
 
-        cineCam.m_YAxis.Value = -1f;
-        cineCam.m_XAxis.Value = -90f;
-
+        endCamTimer = 0f;
         endCamDuration = 8f;
         endCamMoving = true;
 
         fadeAnimator.SetTrigger("FadeIn");
+        rain1.SetActive(true);
         rainSound.Play();
 
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(7f);
 
         fadeAnimator.SetTrigger("FadeOut");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
+        endCamMoving = false;
         rainSound.Stop();
+        rain1.SetActive(false);
 
-        camTarget.transform.position = endCamPos3.position;
-        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        mainCam.transform.position = endCamPos3.position;
+        mainCam.transform.eulerAngles = endCamPos3.eulerAngles;
         endCamStartPos = endCamPos3.position;
         endCamEndPos = endCamPos4.position;
 
-        cineCam.m_YAxis.Value = -1f;
-        cineCam.m_XAxis.Value = -135f;
-
+        endCamTimer = 0f;
         endCamDuration = 8f;
 
-        fadeAnimator.SetTrigger("FadeIn");
         rainSound.Play();
+        rain2.SetActive(true);
 
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(1f);
+
+        endCamMoving = true;
+
+        fadeAnimator.SetTrigger("FadeIn");
+
+        yield return new WaitForSeconds(7f);
 
         fadeAnimator.SetTrigger("FadeOut");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
+        endCamMoving = false;
         rainSound.Stop();
+        rain2.SetActive(false);
 
-        camTarget.transform.position = endCamPos5.position;
-        camTarget.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        mainCam.transform.position = endCamPos5.position;
+        mainCam.transform.eulerAngles = endCamPos5.eulerAngles;
         endCamStartPos = endCamPos5.position;
         endCamEndPos = endCamPos6.position;
 
-        cineCam.m_YAxis.Value = -1f;
-        cineCam.m_XAxis.Value = -135f;
-
+        endCamTimer = 0f;
         endCamDuration = 8f;
 
-        fadeAnimator.SetTrigger("FadeIn");
         rainSound.Play();
+        rain3.SetActive(true);
 
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(1f);
+
+        endCamMoving = true;
+
+        fadeAnimator.SetTrigger("FadeIn");
+
+        yield return new WaitForSeconds(7f);
 
         fadeAnimator.SetTrigger("FadeOut");
 
         yield return new WaitForSeconds(3f);
 
+        rain3.SetActive(false);
         rainSound.Stop();
-
         endCamMoving = false;
     }
 
@@ -1808,6 +1818,12 @@ public class EventManager : MonoBehaviour
     public void Choice2()
     {
         choiceValue = 2;
+        choiceMade = true;
+    }
+
+    public void Choice3()
+    {
+        choiceValue = 3;
         choiceMade = true;
     }
 
