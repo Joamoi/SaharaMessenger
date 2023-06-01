@@ -21,5 +21,7 @@ public class TimeChange : MonoBehaviour
 
             }
         }
+
+        gameObject.SetActive(false);
     }
 }

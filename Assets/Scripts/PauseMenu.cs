@@ -16,10 +16,14 @@ public class PauseMenu : MonoBehaviour
 
     public Slider camSpeedSlider;
 
+    public Dropdown resolutionDropDown;
+    private int nativeResX;
+    private int nativeResY;
+
     private bool inAreYouSure = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (!(PlayerPrefs.GetFloat("musicVol") == 0))
         {
@@ -36,6 +40,16 @@ public class PauseMenu : MonoBehaviour
         if (!(PlayerPrefs.GetFloat("camSpeed") == 0))
         {
             camSpeedSlider.value = PlayerPrefs.GetFloat("camSpeed");
+        }
+
+        nativeResX = Screen.currentResolution.width;
+        nativeResY = Screen.currentResolution.height;
+
+        if (!(PlayerPrefs.GetInt("useFullHD") == 0))
+        {
+            Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+
+            resolutionDropDown.value = 1;
         }
     }
 
@@ -143,6 +157,21 @@ public class PauseMenu : MonoBehaviour
         if (EventManager.eventInstance.cineCam.m_YAxis.m_MaxSpeed != 0)
         {
             EventManager.eventInstance.cineCam.m_YAxis.m_MaxSpeed = speed;
+        }
+    }
+
+    public void SetResolution()
+    {
+        if (resolutionDropDown.value == 0)
+        {
+            Screen.SetResolution(nativeResX, nativeResY, FullScreenMode.FullScreenWindow);
+            PlayerPrefs.SetInt("useFullHD", 0);
+        }
+
+        else if (resolutionDropDown.value == 1)
+        {
+            Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+            PlayerPrefs.SetInt("useFullHD", 1);
         }
     }
 }

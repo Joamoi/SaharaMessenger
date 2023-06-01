@@ -32,6 +32,11 @@ public class EventManager : MonoBehaviour
     public CinemachineFreeLook cineCam;
     public GameObject camTarget;
     public GameObject mainCam;
+    public GameObject snakeCollider;
+    public GameObject chaseCollider;
+    public GameObject chaseEndCollider;
+    public GameObject sandstormEndCollider;
+    public GameObject peek1Collider;
     public Transform turtleCamPos;
     public Transform endCamPos1;
     public Transform endCamPos2;
@@ -49,6 +54,7 @@ public class EventManager : MonoBehaviour
     public GameObject rain1;
     public GameObject rain2;
     public GameObject rain3;
+    public GameObject endMenu;
 
     public bool playStartCutscene;
     public bool startFromCheckPoint;
@@ -145,11 +151,14 @@ public class EventManager : MonoBehaviour
     public GameObject rabbitFace;
     public GameObject rabbitSmilingFace;
     public GameObject snakeFace;
+    public GameObject snakeGrinFace;
     public GameObject turtleFace;
     public GameObject turtleSmilingFace;
     public GameObject jackalFace;
     public GameObject jackalGrinFace;
     public GameObject sheepFace;
+    public GameObject chunkyJackalFace;
+    public GameObject jackalsFace;
 
     [HideInInspector]
     public Color32 originalAmbientColor;
@@ -183,6 +192,8 @@ public class EventManager : MonoBehaviour
     public AudioSource snakeRisesSound;
     public AudioSource rainSound;
     public AudioSource spellSound;
+    public AudioSource jackalPeekSound;
+    public AudioSource jackalHowlSound;
 
     void Awake()
     {
@@ -249,6 +260,7 @@ public class EventManager : MonoBehaviour
                     cpCollider3.SetActive(false);
                     cpCollider4.SetActive(false);
                     cpCollider5.SetActive(false);
+                    snakeCollider.SetActive(false);
                     StartCoroutine("StartNight");
                     break;
 
@@ -260,6 +272,10 @@ public class EventManager : MonoBehaviour
                     cpCollider4.SetActive(false);
                     cpCollider5.SetActive(false);
                     cpCollider6.SetActive(false);
+                    snakeCollider.SetActive(false);
+                    chaseCollider.SetActive(false);
+                    chaseEndCollider.SetActive(false);
+                    sandstormEndCollider.SetActive(false);
                     StartCoroutine("StartDay");
                     break;
 
@@ -828,14 +844,14 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = rabbitLines1;
-        rabbitFace.SetActive(true);
+        rabbitSmilingFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
     IEnumerator Rabbit2()
     {
-        rabbitFace.SetActive(false);
+        rabbitSmilingFace.SetActive(false);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -880,7 +896,7 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = rabbitLines5;
-        rabbitFace.SetActive(true);
+        rabbitSmilingFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
@@ -894,14 +910,14 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = rabbitLines6;
-        rabbitFace.SetActive(true);
+        rabbitSmilingFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
     IEnumerator Rabbit7()
     {
-        rabbitFace.SetActive(false);
+        rabbitSmilingFace.SetActive(false);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -953,13 +969,13 @@ public class EventManager : MonoBehaviour
         camStartX = cineCam.m_XAxis.Value;
         camTargetX = -10f;
         camStartY = cineCam.m_YAxis.Value;
-        camTargetY = 0.3f;
+        camTargetY = -0.2f;
         lerpFloat = 0f;
         camTurning = true;
 
         yield return new WaitForSeconds(1.5f);
 
-        snake.transform.position = fox.transform.position + new Vector3(0.2f, -0.15f, 1f);
+        snake.transform.position = fox.transform.position + new Vector3(0.2f, -0.15f, 1.5f);
 
         Vector3 direction = (snake.transform.position - fox.transform.position).normalized;
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
@@ -1069,14 +1085,14 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = snakeLines6;
-        snakeFace.SetActive(true);
+        snakeGrinFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
     IEnumerator Snake7()
     {
-        snakeFace.SetActive(false);
+        snakeGrinFace.SetActive(false);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -1254,14 +1270,14 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = turtleLines1;
-        turtleFace.SetActive(true);
+        turtleSmilingFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
     IEnumerator Turtle2()
     {
-        turtleFace.SetActive(false);
+        turtleSmilingFace.SetActive(false);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -1445,6 +1461,9 @@ public class EventManager : MonoBehaviour
         rain3.SetActive(false);
         rainSound.Stop();
         endCamMoving = false;
+
+        PlayerPrefs.SetInt("cpValue", 0);
+        endMenu.SetActive(true);
     }
 
     public IEnumerator EnemyPeek1()
@@ -1470,7 +1489,11 @@ public class EventManager : MonoBehaviour
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1f);
+
+        jackalPeekSound.Play();
+
+        yield return new WaitForSeconds(1.5f);
 
         peekAnimator1.SetTrigger("Peek");
 
@@ -1521,7 +1544,11 @@ public class EventManager : MonoBehaviour
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1f);
+
+        jackalPeekSound.Play();
+
+        yield return new WaitForSeconds(1.5f);
 
         peekAnimator2.SetTrigger("Peek");
 
@@ -1643,13 +1670,14 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = chaseLines3;
-        jackalFace.SetActive(true);
+        jackalGrinFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
     IEnumerator Chase4()
     {
+        jackalGrinFace.SetActive(false);
         currentConv = "chase4";
         npcTextField.SetActive(true);
 
@@ -1657,14 +1685,14 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = chaseLines4;
-        jackalFace.SetActive(true);
+        jackalsFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
 
     IEnumerator Chase5()
     {
-        jackalFace.SetActive(false);
+        jackalsFace.SetActive(false);
 
         yield return new WaitForSeconds(0.2f);
 
@@ -1675,7 +1703,9 @@ public class EventManager : MonoBehaviour
 
     public IEnumerator Chase()
     {
-        chaseMusic.Play();
+        jackalHowlSound.Play();
+
+        yield return new WaitForSeconds(2f);
 
         npcTextField.SetActive(false);
         Cursor.visible = false;
@@ -1684,7 +1714,7 @@ public class EventManager : MonoBehaviour
         chaseJackal2.GetComponent<Jackal>().StartCoroutine("StartChase");
         chaseJackal3.GetComponent<Jackal>().StartCoroutine("StartChase");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         //camTurnTime = 0.3f;
         //camStartX = cineCam.m_XAxis.Value;
@@ -1695,6 +1725,8 @@ public class EventManager : MonoBehaviour
         //camTurning = true;
 
         //yield return new WaitForSeconds(0.4f);
+
+        chaseMusic.Play();
 
         PlayerManager.playerInstance.canMove = true;
         PlayerManager.playerInstance.noDrain = false;
@@ -1773,7 +1805,7 @@ public class EventManager : MonoBehaviour
 
         lineIndex = 0;
         speechLines = jackalLines;
-        jackalFace.SetActive(true);
+        chunkyJackalFace.SetActive(true);
 
         StartCoroutine("NextLine");
     }
@@ -1844,7 +1876,7 @@ public class EventManager : MonoBehaviour
     IEnumerator QuitTalk()
     {
         sheepFace.SetActive(false);
-        jackalFace.SetActive(false);
+        chunkyJackalFace.SetActive(false);
         rabbitFace.SetActive(false);
 
         npcTextField.SetActive(false);
