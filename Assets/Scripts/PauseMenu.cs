@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -16,11 +17,13 @@ public class PauseMenu : MonoBehaviour
 
     public Slider camSpeedSlider;
 
-    public Dropdown resolutionDropDown;
+    public TMP_Dropdown resolutionDropDown;
     private int nativeResX;
     private int nativeResY;
 
     private bool inAreYouSure = false;
+
+    public GameObject textField;
 
     // Start is called before the first frame update
     void Awake()
@@ -42,13 +45,24 @@ public class PauseMenu : MonoBehaviour
             camSpeedSlider.value = PlayerPrefs.GetFloat("camSpeed");
         }
 
-        nativeResX = Screen.currentResolution.width;
-        nativeResY = Screen.currentResolution.height;
+        if (!(PlayerPrefs.GetInt("nativeResX") == 0))
+        {
+            nativeResX = PlayerPrefs.GetInt("nativeResX");
+            nativeResY = PlayerPrefs.GetInt("nativeResY");
+        }
+
+        else
+        {
+            nativeResX = Screen.currentResolution.width;
+            nativeResY = Screen.currentResolution.height;
+
+            PlayerPrefs.SetInt("nativeResX", nativeResX);
+            PlayerPrefs.SetInt("nativeResY", nativeResY);
+        }
 
         if (!(PlayerPrefs.GetInt("useFullHD") == 0))
         {
             Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
-
             resolutionDropDown.value = 1;
         }
     }
@@ -95,7 +109,11 @@ public class PauseMenu : MonoBehaviour
         PlayerManager.playerInstance.gameIsPaused = false;
         pauseMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
+
+        if (!textField.activeInHierarchy)
+        {
+            Cursor.visible = false;
+        }
     }
 
     public void NewGame()

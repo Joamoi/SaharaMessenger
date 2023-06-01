@@ -232,6 +232,7 @@ public class EventManager : MonoBehaviour
         {
             cpValue = PlayerPrefs.GetInt("cpValue");
             normalMusic.Play();
+            scarf.SetActive(true);
 
             switch (cpValue)
             {
@@ -1120,6 +1121,7 @@ public class EventManager : MonoBehaviour
         snake.GetComponent<Snake>().Walk();
 
         snakeAnimator.SetTrigger("Closer");
+        snakeSound.Play();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -1517,6 +1519,8 @@ public class EventManager : MonoBehaviour
 
         PlayerPrefs.SetInt("cpValue", 0);
         endMenu.SetActive(true);
+        fade.SetActive(false);
+        Cursor.visible = true;
     }
 
     public IEnumerator EnemyPeek1()
