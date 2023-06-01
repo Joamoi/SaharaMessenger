@@ -18,8 +18,10 @@ public class EventManager : MonoBehaviour
     public Animator turtleAnimator;
     public GameObject peekJackal1;
     public GameObject peekJackal2;
+    public GameObject peekJackal3;
     public Animator peekAnimator1;
     public Animator peekAnimator2;
+    public Animator peekAnimator3;
     public GameObject chaseJackal1;
     public GameObject chaseJackal2;
     public GameObject chaseJackal3;
@@ -42,6 +44,8 @@ public class EventManager : MonoBehaviour
     private Vector3 endCamEndPos;
     private float endCamTimer;
     private float endCamDuration;
+    public GameObject spell1;
+    public GameObject spell2;
     public GameObject rain1;
     public GameObject rain2;
     public GameObject rain3;
@@ -156,10 +160,14 @@ public class EventManager : MonoBehaviour
     public GameObject respawn2;
     public GameObject respawn3;
     public GameObject respawn4;
+    public GameObject respawn5;
+    public GameObject respawn6;
     public GameObject cpCollider1;
     public GameObject cpCollider2;
     public GameObject cpCollider3;
     public GameObject cpCollider4;
+    public GameObject cpCollider5;
+    public GameObject cpCollider6;
     [HideInInspector]
     public int cpValue;
     [HideInInspector]
@@ -207,14 +215,14 @@ public class EventManager : MonoBehaviour
                 case 1:
                     respawnPos = respawn1.transform.position;
                     cpCollider1.SetActive(false);
-                    TimeManager.timeInstance.dayOnly = false;
+                    StartCoroutine("StartDay");
                     break;
 
                 case 2:
                     respawnPos = respawn2.transform.position;
                     cpCollider1.SetActive(false);
                     cpCollider2.SetActive(false);
-                    TimeManager.timeInstance.dayOnly = false;
+                    StartCoroutine("StartNight");
                     break;
 
                 case 3:
@@ -222,7 +230,7 @@ public class EventManager : MonoBehaviour
                     cpCollider1.SetActive(false);
                     cpCollider2.SetActive(false);
                     cpCollider3.SetActive(false);
-                    TimeManager.timeInstance.dayOnly = true;
+                    StartCoroutine("StartDay");
                     break;
 
                 case 4:
@@ -231,13 +239,33 @@ public class EventManager : MonoBehaviour
                     cpCollider2.SetActive(false);
                     cpCollider3.SetActive(false);
                     cpCollider4.SetActive(false);
-                    TimeManager.timeInstance.dayOnly = false;
+                    StartCoroutine("StartDay");
+                    break;
+
+                case 5:
+                    respawnPos = respawn5.transform.position;
+                    cpCollider1.SetActive(false);
+                    cpCollider2.SetActive(false);
+                    cpCollider3.SetActive(false);
+                    cpCollider4.SetActive(false);
+                    cpCollider5.SetActive(false);
+                    StartCoroutine("StartNight");
+                    break;
+
+                case 6:
+                    respawnPos = respawn6.transform.position;
+                    cpCollider1.SetActive(false);
+                    cpCollider2.SetActive(false);
+                    cpCollider3.SetActive(false);
+                    cpCollider4.SetActive(false);
+                    cpCollider5.SetActive(false);
+                    cpCollider6.SetActive(false);
+                    StartCoroutine("StartDay");
                     break;
 
                 default:
                     respawnPos = respawn1.transform.position;
                     cpCollider1.SetActive(false);
-                    TimeManager.timeInstance.dayOnly = false;
                     break;
             }
         }
@@ -245,6 +273,7 @@ public class EventManager : MonoBehaviour
         else
         {
             cpValue = 0;
+            StartCoroutine("StartDay");
 
             if (playStartCutscene)
             {
@@ -1185,6 +1214,8 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
+        normalMusic.Stop();
+
         yield return new WaitForSeconds(1f);
 
         camTurnTime = 0.5f;
@@ -1195,7 +1226,7 @@ public class EventManager : MonoBehaviour
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         PlayerManager.playerInstance.z = 1f;
 
@@ -1318,12 +1349,19 @@ public class EventManager : MonoBehaviour
         turtleAnimator.SetTrigger("Spell");
         spellSound.Play();
 
+        yield return new WaitForSeconds(1f);
+
+        spell1.SetActive(true);
+        spell2.SetActive(true);
+
         yield return new WaitForSeconds(5f);
 
         fadeAnimator.SetTrigger("FadeOut");
 
         yield return new WaitForSeconds(3f);
 
+        spell1.SetActive(false);
+        spell2.SetActive(false);
         StartCoroutine("EndScene");
     }
 
@@ -1337,6 +1375,8 @@ public class EventManager : MonoBehaviour
         endCamTimer = 0f;
         endCamDuration = 8f;
         endCamMoving = true;
+
+        RenderSettings.ambientLight = originalAmbientColor;
 
         fadeAnimator.SetTrigger("FadeIn");
         rain1.SetActive(true);
@@ -1430,11 +1470,13 @@ public class EventManager : MonoBehaviour
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
 
         peekAnimator1.SetTrigger("Peek");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
+
+        peekJackal1.SetActive(false);
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
@@ -1467,6 +1509,7 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.z = 0f;
 
         peekJackal2.SetActive(true);
+        peekJackal3.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
@@ -1478,11 +1521,18 @@ public class EventManager : MonoBehaviour
         lerpFloat = 0f;
         camTurning = true;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
 
         peekAnimator2.SetTrigger("Peek");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
+
+        peekAnimator3.SetTrigger("Peek");
+
+        yield return new WaitForSeconds(1f);
+
+        peekJackal2.SetActive(false);
+        peekJackal3.SetActive(false);
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
@@ -1834,9 +1884,9 @@ public class EventManager : MonoBehaviour
         fade.SetActive(false);
     }
 
-    public void NewCheckpoint()
+    public void NewCheckpoint(int number)
     {
-        cpValue++;
+        cpValue = number;
         PlayerPrefs.SetInt("cpValue", cpValue);
 
         switch (cpValue)
@@ -1857,9 +1907,31 @@ public class EventManager : MonoBehaviour
                 respawnPos = respawn4.transform.position;
                 break;
 
+            case 5:
+                respawnPos = respawn5.transform.position;
+                break;
+
+            case 6:
+                respawnPos = respawn6.transform.position;
+                break;
+
             default:
                 respawnPos = respawn1.transform.position;
                 break;
         }
+    }
+
+    public IEnumerator StartDay()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        TimeManager.timeInstance.StartCoroutine("Day");
+    }
+
+    public IEnumerator StartNight()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        TimeManager.timeInstance.StartCoroutine("Night");
     }
 }

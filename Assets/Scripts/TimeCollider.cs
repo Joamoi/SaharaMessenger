@@ -12,13 +12,13 @@ public class TimeCollider : MonoBehaviour
         {
             if (dayOrCycle == 1)
             {
-                TimeManager.timeInstance.dayOnly = true;
+                 //TimeManager.timeInstance.dayOnly = true;
             }
 
             else
             {
-                TimeManager.timeInstance.dayOnly = false;
-                TimeManager.timeInstance.StartCoroutine("DayToNight");
+                //TimeManager.timeInstance.dayOnly = false;
+                //TimeManager.timeInstance.StartCoroutine("DayToNight");
             }
         }
     }

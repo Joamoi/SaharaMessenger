@@ -440,7 +440,7 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator EatDontMove()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         canMove = true;
     }
 
@@ -479,6 +479,9 @@ public class PlayerManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+
         //hp = 100f;
         //stamina = 100f;
 
@@ -508,9 +511,6 @@ public class PlayerManager : MonoBehaviour
 
         //dead = false;
         //canMove = true;
-
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
     }
 
     IEnumerator InAir()

@@ -29,7 +29,7 @@ public class TimeManager : MonoBehaviour
     private float transitionTime = 0f;
     private bool colorChanging = false;
     [HideInInspector]
-    public bool dayOnly = false;
+    //public bool dayOnly = false;
 
     public AudioSource daySound;
     public AudioSource nightSound;
@@ -55,7 +55,7 @@ public class TimeManager : MonoBehaviour
         originalNightVolume = nightSound.volume;
 
         rotationY = dirLight.transform.localEulerAngles.y;
-        StartCoroutine("Day");
+        //StartCoroutine("Day");
     }
 
     // Update is called once per frame
@@ -120,19 +120,29 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    IEnumerator Day()
+    public IEnumerator Day()
     {
+        dirLight.transform.localRotation = Quaternion.Euler(dayLightAngle, rotationY, 0f);
+        dirLight.GetComponent<Light>().color = gradient.Evaluate(0f);
+
+        for (int i = 0; i < sandstorms.Length; i++)
+        {
+            ParticleSystem.MainModule main = sandstorms[i].main;
+            Color color = new Color32(dayStormColor.r, dayStormColor.g, dayStormColor.b, 255);
+            main.startColor = color;
+        }
+
         timeDrainMultiplier = dayMultiplier;
         Debug.Log("Day Started");
         yield return new WaitForSeconds(dayLength);
 
-        if (!dayOnly)
-        {
-            //StartCoroutine("DayToNight");
-        }
+        //if (!dayOnly)
+        //{
+        //    StartCoroutine("DayToNight");
+        //}
     }
 
-    IEnumerator DayToNight()
+    public IEnumerator DayToNight()
     {
         timeDrainMultiplier = afternoonMultiplier;
         Debug.Log("DayToNight Started");
@@ -149,15 +159,25 @@ public class TimeManager : MonoBehaviour
         StartCoroutine("Night");
     }
 
-    IEnumerator Night()
+    public IEnumerator Night()
     {
+        dirLight.transform.localRotation = Quaternion.Euler(nightLightAngle, rotationY, 0f);
+        dirLight.GetComponent<Light>().color = gradient.Evaluate(1f);
+
+        for (int i = 0; i < sandstorms.Length; i++)
+        {
+            ParticleSystem.MainModule main = sandstorms[i].main;
+            Color color = new Color32(nightStormColor.r, nightStormColor.g, nightStormColor.b, 255);
+            main.startColor = color;
+        }
+
         timeDrainMultiplier = nightMultiplier;
         Debug.Log("Night Started");
         yield return new WaitForSeconds(dayLength);
         //StartCoroutine("NightToDay");
     }
 
-    IEnumerator NightToDay()
+    public IEnumerator NightToDay()
     {
         timeDrainMultiplier = eveningMultiplier;
         Debug.Log("NightToDay Started");
