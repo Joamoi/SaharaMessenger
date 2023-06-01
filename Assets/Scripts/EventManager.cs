@@ -188,6 +188,13 @@ public class EventManager : MonoBehaviour
 
     public AudioSource normalMusic;
     public AudioSource chaseMusic;
+    private float normalMusicVolume;
+    private float chaseMusicVolume;
+    private float fadeTimer;
+    private float fadeDuration;
+    private bool normalMusicFadeOut = false;
+    private bool chaseMusicFadeOut = false;
+
     public AudioSource oldFoxSound;
     public AudioSource jackalSound;
     public AudioSource snakeSound;
@@ -326,6 +333,9 @@ public class EventManager : MonoBehaviour
         //StartCoroutine("HideFade", 3f);
 
         originalAmbientColor = RenderSettings.ambientLight;
+
+        normalMusicVolume = normalMusic.volume;
+        chaseMusicVolume = chaseMusic.volume;
     }
 
     // Update is called once per frame
@@ -341,6 +351,32 @@ public class EventManager : MonoBehaviour
         //{
         //    RenderSettings.ambientLight = new Color32(50, 50, 50, 255);
         //}
+
+        if (normalMusicFadeOut)
+        {
+            fadeTimer += Time.deltaTime;
+            normalMusic.volume = (1f - (fadeTimer / fadeDuration)) * normalMusicVolume;
+
+            if (normalMusic.volume == 0f)
+            {
+                normalMusic.volume = normalMusicVolume;
+                normalMusic.Stop();
+                normalMusicFadeOut = false;
+            }
+        }
+
+        if (chaseMusicFadeOut)
+        {
+            fadeTimer += Time.deltaTime;
+            chaseMusic.volume = (1f - (fadeTimer / fadeDuration)) * chaseMusicVolume;
+
+            if (chaseMusic.volume == 0f)
+            {
+                chaseMusic.volume = normalMusicVolume;
+                chaseMusic.Stop();
+                chaseMusicFadeOut = false;
+            }
+        }
 
         if (camTurning)
         {
@@ -1245,7 +1281,9 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
-        normalMusic.Stop();
+        fadeTimer = 0f;
+        fadeDuration = 2f;
+        normalMusicFadeOut = true;
 
         yield return new WaitForSeconds(1f);
 
@@ -1616,7 +1654,9 @@ public class EventManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        normalMusic.Stop();
+        fadeTimer = 0f;
+        fadeDuration = 2f;
+        normalMusicFadeOut = true;
 
         camTurnTime = 1f;
         camStartX = cineCam.m_XAxis.Value;
@@ -1765,9 +1805,14 @@ public class EventManager : MonoBehaviour
         chaseJackal3.GetComponent<Jackal>().StopChase();
     }
 
-    public void SandstormEnd()
+    public IEnumerator SandstormEnd()
     {
-        chaseMusic.Stop();
+        fadeTimer = 0f;
+        fadeDuration = 2f;
+        chaseMusicFadeOut = true;
+
+        yield return new WaitForSeconds(2f);
+
         normalMusic.Play();
 
         //chaseJackal1.SetActive(false);

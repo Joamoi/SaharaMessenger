@@ -72,17 +72,6 @@ public class Jackal : MonoBehaviour
 
         velocity.y += -20f * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-
-        // for testing
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            animator.SetBool("Running", true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            animator.SetBool("Running", false);
-        }
     }
 
     public IEnumerator StartChase()

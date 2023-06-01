@@ -22,8 +22,8 @@ public class SilentTemple : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            daySound.volume = 0.3f * daySoundVolume;
-            nightSound.volume = 0.3f * nightSoundVolume;
+            daySound.volume = 0.2f * daySoundVolume;
+            nightSound.volume = 0.2f * nightSoundVolume;
         }
     }
 

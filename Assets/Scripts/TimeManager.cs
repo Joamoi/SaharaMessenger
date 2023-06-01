@@ -122,6 +122,9 @@ public class TimeManager : MonoBehaviour
 
     public IEnumerator Day()
     {
+        daySound.volume = originalDayVolume;
+        nightSound.Stop();
+
         dirLight.transform.localRotation = Quaternion.Euler(dayLightAngle, rotationY, 0f);
         dirLight.GetComponent<Light>().color = gradient.Evaluate(0f);
 
@@ -151,8 +154,8 @@ public class TimeManager : MonoBehaviour
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = true;
         timeDrainMultiplier = eveningMultiplier;
-        daySound.Stop();
-        nightSound.Play();
+        //daySound.Stop();
+        //nightSound.Play();
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = false;
         dayToNight = false;
@@ -161,6 +164,9 @@ public class TimeManager : MonoBehaviour
 
     public IEnumerator Night()
     {
+        daySound.volume = 0.5f * originalDayVolume;
+        nightSound.Play();
+
         dirLight.transform.localRotation = Quaternion.Euler(nightLightAngle, rotationY, 0f);
         dirLight.GetComponent<Light>().color = gradient.Evaluate(1f);
 
