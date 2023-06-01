@@ -59,6 +59,10 @@ public class EventManager : MonoBehaviour
     public bool playStartCutscene;
     public bool startFromCheckPoint;
 
+    public GameObject textTutorial;
+    public GameObject answerTutorial;
+    public GameObject tutorialManager;
+
     public GameObject fade;
     public Animator fadeAnimator;
 
@@ -220,6 +224,7 @@ public class EventManager : MonoBehaviour
         if (!(PlayerPrefs.GetInt("cpValue") == 0) && startFromCheckPoint)
         {
             cpValue = PlayerPrefs.GetInt("cpValue");
+            normalMusic.Play();
 
             switch (cpValue)
             {
@@ -241,6 +246,7 @@ public class EventManager : MonoBehaviour
                     cpCollider1.SetActive(false);
                     cpCollider2.SetActive(false);
                     cpCollider3.SetActive(false);
+                    peek1Collider.SetActive(false);
                     StartCoroutine("StartDay");
                     break;
 
@@ -622,11 +628,14 @@ public class EventManager : MonoBehaviour
         speechLines = oldFoxLines1;
         oldFoxFace.SetActive(true);
 
+        textTutorial.SetActive(true);
+
         StartCoroutine("NextLine");
     }
 
     IEnumerator OldFox2()
     {
+        textTutorial.SetActive(false);
         oldFoxFace.SetActive(false);
         npcTextField.SetActive(false);
 
@@ -665,10 +674,14 @@ public class EventManager : MonoBehaviour
         choiceText2.text = oldFoxLines2[1];
         choice1.SetActive(true);
         choice2.SetActive(true);
+
+        answerTutorial.SetActive(true);
     }
 
     IEnumerator OldFox3()
     {
+        answerTutorial.SetActive(false);
+
         currentConv = "oldFox3";
         npcTextField.SetActive(true);
 
@@ -824,6 +837,8 @@ public class EventManager : MonoBehaviour
         uiObjects.SetActive(true);
 
         normalMusic.Play();
+
+        tutorialManager.GetComponent<TutorialManager>().LookTutorial();
     }
 
     public IEnumerator Rabbit1()
