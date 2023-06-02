@@ -10,6 +10,8 @@ public class StarCollider : MonoBehaviour
         {
             EventManager.eventInstance.ShowStar();
             gameObject.SetActive(false);
+
+            Debug.Log("asd");
         }
     }
 }

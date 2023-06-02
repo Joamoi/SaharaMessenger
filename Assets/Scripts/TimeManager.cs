@@ -193,8 +193,8 @@ public class TimeManager : MonoBehaviour
         yield return new WaitForSeconds(transitionLength / 2f);
         colorChanging = false;
         timeDrainMultiplier = afternoonMultiplier;
-        nightSound.Stop();
-        daySound.Play();
+        //nightSound.Stop();
+        //daySound.Play();
         yield return new WaitForSeconds(transitionLength / 2f);
         nightToDay = false;
         StartCoroutine("Day");
