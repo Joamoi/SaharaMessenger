@@ -55,6 +55,7 @@ public class EventManager : MonoBehaviour
     public GameObject rain2;
     public GameObject rain3;
     public GameObject endMenu;
+    public GameObject star;
 
     public bool playStartCutscene;
     public bool startFromCheckPoint;
@@ -275,6 +276,7 @@ public class EventManager : MonoBehaviour
                     cpCollider4.SetActive(false);
                     cpCollider5.SetActive(false);
                     snakeCollider.SetActive(false);
+                    star.SetActive(true);
                     StartCoroutine("StartNight");
                     break;
 
@@ -290,6 +292,7 @@ public class EventManager : MonoBehaviour
                     chaseCollider.SetActive(false);
                     chaseEndCollider.SetActive(false);
                     sandstormEndCollider.SetActive(false);
+                    star.SetActive(true);
                     StartCoroutine("StartDay");
                     break;
 
@@ -2029,5 +2032,10 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         TimeManager.timeInstance.StartCoroutine("Night");
+    }
+
+    public void ShowStar()
+    {
+        star.SetActive(true);
     }
 }
