@@ -185,6 +185,7 @@ public class TimeManager : MonoBehaviour
 
     public IEnumerator NightToDay()
     {
+        nightSound.Stop();
         timeDrainMultiplier = eveningMultiplier;
         Debug.Log("NightToDay Started");
         transitionTime = 0f;
