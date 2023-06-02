@@ -37,6 +37,10 @@ public class EventManager : MonoBehaviour
     public GameObject chaseEndCollider;
     public GameObject sandstormEndCollider;
     public GameObject peek1Collider;
+    public GameObject startNightCollider1;
+    public GameObject startDayCollider1;
+    public GameObject startNightCollider2;
+    public GameObject startDayCollider2;
     public Transform turtleCamPos;
     public Transform endCamPos1;
     public Transform endCamPos2;
@@ -56,6 +60,8 @@ public class EventManager : MonoBehaviour
     public GameObject rain3;
     public GameObject endMenu;
     public GameObject star;
+    public GameObject wellDone;
+    public GameObject wellDoneText;
 
     public bool playStartCutscene;
     public bool startFromCheckPoint;
@@ -189,6 +195,7 @@ public class EventManager : MonoBehaviour
 
     public AudioSource normalMusic;
     public AudioSource chaseMusic;
+    public AudioSource endMusic;
     private float normalMusicVolume;
     private float chaseMusicVolume;
     private float fadeTimer;
@@ -247,6 +254,7 @@ public class EventManager : MonoBehaviour
                     respawnPos = respawn2.transform.position;
                     cpCollider1.SetActive(false);
                     cpCollider2.SetActive(false);
+                    startNightCollider1.SetActive(false);
                     StartCoroutine("StartNight");
                     break;
 
@@ -256,6 +264,8 @@ public class EventManager : MonoBehaviour
                     cpCollider2.SetActive(false);
                     cpCollider3.SetActive(false);
                     peek1Collider.SetActive(false);
+                    startNightCollider1.SetActive(false);
+                    startDayCollider1.SetActive(false);
                     StartCoroutine("StartDay");
                     break;
 
@@ -277,6 +287,7 @@ public class EventManager : MonoBehaviour
                     cpCollider5.SetActive(false);
                     snakeCollider.SetActive(false);
                     star.SetActive(true);
+                    startNightCollider2.SetActive(false);
                     StartCoroutine("StartNight");
                     break;
 
@@ -292,6 +303,8 @@ public class EventManager : MonoBehaviour
                     chaseCollider.SetActive(false);
                     chaseEndCollider.SetActive(false);
                     sandstormEndCollider.SetActive(false);
+                    startNightCollider2.SetActive(false);
+                    startDayCollider2.SetActive(false);
                     star.SetActive(true);
                     StartCoroutine("StartDay");
                     break;
@@ -1455,6 +1468,7 @@ public class EventManager : MonoBehaviour
         fadeAnimator.SetTrigger("FadeIn");
         rain1.SetActive(true);
         rainSound.Play();
+        endMusic.Play();
 
         yield return new WaitForSeconds(7f);
 
@@ -1521,6 +1535,20 @@ public class EventManager : MonoBehaviour
         endCamMoving = false;
 
         PlayerPrefs.SetInt("cpValue", 0);
+
+        wellDone.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        wellDoneText.SetActive(true);
+
+        yield return new WaitForSeconds(3f);
+
+        wellDoneText.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+
+        wellDone.SetActive(false);
         endMenu.SetActive(true);
         fade.SetActive(false);
         Cursor.visible = true;
@@ -1797,12 +1825,13 @@ public class EventManager : MonoBehaviour
         uiObjects.SetActive(true);
     }
 
-    public IEnumerator ChaseSandstorm()
+    public void VisualSandstorm()
     {
         chaseSandstorm.SetActive(true);
+    }
 
-        yield return new WaitForSeconds(3f);
-
+    public IEnumerator ChaseEnd()
+    {
         chaseSandstorm.GetComponent<BoxCollider>().enabled = true;
 
         yield return new WaitForSeconds(1f);

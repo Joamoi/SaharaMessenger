@@ -8,7 +8,7 @@ public class ChaseEnd : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            EventManager.eventInstance.StartCoroutine("ChaseSandstorm");
+            EventManager.eventInstance.StartCoroutine("ChaseEnd");
             gameObject.SetActive(false);
         }
     }
