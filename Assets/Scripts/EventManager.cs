@@ -1299,10 +1299,6 @@ public class EventManager : MonoBehaviour
         PlayerManager.playerInstance.x = 0f;
         PlayerManager.playerInstance.z = 0f;
 
-        fadeTimer = 0f;
-        fadeDuration = 2f;
-        normalMusicFadeOut = true;
-
         yield return new WaitForSeconds(1f);
 
         camTurnTime = 0.5f;
@@ -1417,6 +1413,10 @@ public class EventManager : MonoBehaviour
     {
         currentConv = "turtle7";
         npcTextField.SetActive(true);
+
+        fadeTimer = 0f;
+        fadeDuration = 2f;
+        normalMusicFadeOut = true;
 
         yield return new WaitForSeconds(0.2f);
 
