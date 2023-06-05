@@ -17,6 +17,7 @@ public class OasisJackal : MonoBehaviour
                 PlayerManager.playerInstance.talkText.SetActive(false);
                 EventManager.eventInstance.StartCoroutine("Jackal");
                 gameObject.GetComponent<OasisJackal>().enabled = false;
+                gameObject.GetComponent<SphereCollider>().enabled = false;
             }
         }
     }

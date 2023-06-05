@@ -17,6 +17,7 @@ public class Sheep : MonoBehaviour
                 PlayerManager.playerInstance.talkText.SetActive(false);
                 EventManager.eventInstance.StartCoroutine("Sheep");
                 gameObject.GetComponent<Sheep>().enabled = false;
+                gameObject.GetComponent<SphereCollider>().enabled = false;
             }
         }
     }

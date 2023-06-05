@@ -23,6 +23,7 @@ public class Rabbit : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
 
                 gameObject.GetComponent<Rabbit>().enabled = false;
+                gameObject.GetComponent<SphereCollider>().enabled = false;
             }
         }
     }

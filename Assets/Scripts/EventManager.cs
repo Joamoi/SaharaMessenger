@@ -655,7 +655,10 @@ public class EventManager : MonoBehaviour
 
         startRockCollider1.enabled = false;
         startRockCollider2.enabled = false;
+
+        fox.GetComponent<CharacterController>().enabled = false;
         fox.transform.position = startPos.position;
+        fox.GetComponent<CharacterController>().enabled = true;
 
         yield return new WaitForSeconds(2f);
 

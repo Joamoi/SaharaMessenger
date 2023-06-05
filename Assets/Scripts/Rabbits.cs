@@ -17,6 +17,7 @@ public class Rabbits : MonoBehaviour
                 PlayerManager.playerInstance.talkText.SetActive(false);
                 EventManager.eventInstance.StartCoroutine("Bunnies");
                 gameObject.GetComponent<Rabbits>().enabled = false;
+                gameObject.GetComponent<SphereCollider>().enabled = false;
             }
         }
     }
